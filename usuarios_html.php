@@ -64,7 +64,6 @@ include 'navbar.php';
                   <th scope="col">Pagamento</th>
                   <th scope="col">Plano</th>
                   <th scope="col">Ações</th>
-                  <th scope="col">Ações</th>
                 </tr>
               </thead>
               <tbody>
