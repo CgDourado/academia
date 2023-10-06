@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 25/09/2023 às 00:17
+-- Tempo de geração: 06/10/2023 às 04:11
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.2.4
 
@@ -71,7 +71,9 @@ CREATE TABLE `usuario` (
   `data_nascimento` date NOT NULL,
   `peso` varchar(15) NOT NULL,
   `altura` varchar(15) NOT NULL,
-  `imc` varchar(15) NOT NULL
+  `imc` varchar(15) NOT NULL,
+  `pagamento` varchar(20) NOT NULL,
+  `plano` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -110,13 +112,13 @@ ALTER TABLE `dono`
 -- AUTO_INCREMENT de tabela `treinos`
 --
 ALTER TABLE `treinos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
