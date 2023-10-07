@@ -22,6 +22,11 @@ include 'navbar.php';
     .header {
       float: right;
     }
+
+    .payment-column:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
   </style>
 </head>
 
@@ -47,9 +52,13 @@ include 'navbar.php';
             <div class="d-grid gap-2 col-2 mx-auto">
               <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">Novo Cliente</button>
             </div>
+            <form class="d-flex justify-content-start" role="search">
+              <img src="https://cdn.icon-icons.com/icons2/1189/PNG/512/1490793870-user-interface25_82355.png" alt="Ícone de Pesquisa" style="width: 38px; height: 38px; margin-right: 10px;" />
+              <input class="form-control me-2" type="search" id="search" placeholder="Digite sua pesquisa..." style="width: 250px;" aria-label="Search">
+            </form>
           </div>
           <div class="card-body">
-            <table class="table table-hover">
+            <table id="clienteTable" class="table table-hover">
               <thead>
                 <tr>
                   <th scope="col">ID</th>
@@ -61,7 +70,7 @@ include 'navbar.php';
                   <th scope="col">Peso</th>
                   <th scope="col">Altura</th>
                   <th scope="col">IMC</th>
-                  <th scope="col">Pagamento</th>
+                  <th scope="col" class="sortable payment-column">Pagamento 🔽</th>
                   <th scope="col">Plano</th>
                   <th scope="col">Ações</th>
                 </tr>
@@ -224,6 +233,47 @@ include 'navbar.php';
       </div>
     </div>
   </div>
+  <script>
+    $(document).ready(function() {
+      var ordenacao = 0;
+
+      $('.sortable').click(function() {
+        ordenacao = (ordenacao + 1) % 4;
+        filtrarPagamento(ordenacao);
+      });
+
+      function filtrarPagamento(ordenacao) {
+        var rows = $('tbody tr');
+        rows.hide();
+
+        if (ordenacao === 0) {
+          rows.show();
+        } else {
+          rows.each(function() {
+            var pagamento = $(this).find('td:eq(9)').text();
+            if (ordenacao === 1 && pagamento === 'Pago') {
+              $(this).show();
+            } else if (ordenacao === 2 && pagamento === 'A Pagar') {
+              $(this).show();
+            } else if (ordenacao === 3 && pagamento === 'Negociando') {
+              $(this).show();
+            }
+          });
+        }
+      }
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+      $("#search").on("keyup", function() {
+        var searchTerm = $(this).val().toLowerCase();
+        $("#clienteTable tbody tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(searchTerm) > -1);
+        });
+      });
+    });
+  </script>
+
 </body>
 
 </html>
