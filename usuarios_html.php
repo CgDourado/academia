@@ -27,6 +27,11 @@ include 'navbar.php';
       cursor: pointer;
       text-decoration: underline;
     }
+
+    .name-column:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
   </style>
 </head>
 
@@ -62,7 +67,7 @@ include 'navbar.php';
               <thead>
                 <tr>
                   <th scope="col">ID</th>
-                  <th scope="col">Nome</th>
+                  <th scope="col" class="sortable1 name-column">Nome 🔽</th>
                   <th scope="col">E-mail</th>
                   <th scope="col">Telefone</th>
                   <th scope="col">CPF</th>
@@ -141,7 +146,7 @@ include 'navbar.php';
           <form id="registrationForm" action="cadusuario.php" method="POST">
             <div class="form-group">
               <label>Nome</label>
-              <input type="text" class="form-control" name="nome" placeholder="Insira o nome" required />
+              <input type="text" class="form-control" name="nome" id="nome" placeholder="Insira o nome completo" required />
               <br />
               <label>Email</label>
               <input type="email" id='email' class="form-control" name="email" placeholder="Insira o Email" required />
@@ -226,6 +231,26 @@ include 'navbar.php';
               });
             });
           </script>
+          <script>
+            $(document).ready(function() {
+              // Função para formatar o nome com a primeira letra de cada palavra maiúscula
+              function formatarNome() {
+                var nome = $("#nome").val();
+
+                nome = nome.toLowerCase().replace(/(^|\s)\S/g, function(l) {
+                  return l.toUpperCase();
+                });
+
+                $("#nome").val(nome);
+              }
+
+              // Aplica a formatação quando o campo Nome perde o foco
+              $("#nome").blur(function() {
+                formatarNome();
+              });
+            });
+          </script>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Fechar</button>
@@ -244,6 +269,7 @@ include 'navbar.php';
 
       function filtrarPagamento(ordenacao) {
         var rows = $('tbody tr');
+        var rowsPagamento = $('tbody tr td:eq(9)');
         rows.hide();
 
         if (ordenacao === 0) {
@@ -273,6 +299,49 @@ include 'navbar.php';
       });
     });
   </script>
+  <script>
+    $(document).ready(function() {
+      var ordenacao = 0; // 0: Ordenação original, 1: A-Z, 2: Z-A
+
+      $('.sortable1').click(function() {
+        ordenacao = (ordenacao + 1) % 4;
+        ordenarTabela(ordenacao);
+      });
+
+      function ordenarTabela(ordenacao) {
+        var rows = $('#clienteTable tbody tr').get();
+
+        if (ordenacao === 1) {
+          // Ordenar por Nome A-Z
+          rows.sort(function(a, b) {
+            var nomeA = $(a).find('td:eq(1)').text().toUpperCase();
+            var nomeB = $(b).find('td:eq(1)').text().toUpperCase();
+            return nomeA.localeCompare(nomeB);
+          });
+        } else if (ordenacao === 2) {
+          // Ordenar por Nome Z-A
+          rows.sort(function(a, b) {
+            var nomeA = $(a).find('td:eq(1)').text().toUpperCase();
+            var nomeB = $(b).find('td:eq(1)').text().toUpperCase();
+            return nomeB.localeCompare(nomeA);
+          });
+        } else if (ordenacao === 3) {
+          // Ordenar por ID
+          rows.sort(function(a, b) {
+            var idA = parseInt($(a).find('td:eq(0)').text());
+            var idB = parseInt($(b).find('td:eq(0)').text());
+            return idA - idB;
+          });
+        }
+
+        $.each(rows, function(index, row) {
+          $('#clienteTable tbody').append(row);
+        });
+      }
+    });
+  </script>
+
+
 
 </body>
 
