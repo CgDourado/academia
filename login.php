@@ -3,7 +3,7 @@
     include 'conecta.php';
     $login= $_POST['usuario'];
     $senha = $_POST['senha'];
-    $logar = mysqli_query($conn, "SELECT * FROM dono WHERE login='$login' AND senha='$senha'") or die("Erro ao selecionar");
+    $logar = mysqli_query($conn, "SELECT * FROM dono WHERE login='$login' AND senha='$senha' UNION SELECT * FROM treinadores WHERE login='$login' AND senha='$senha'") or die("Erro ao selecionar");
         if (mysqli_num_rows($logar)> 0){
             $dados = mysqli_fetch_assoc($logar);
             $_SESSION["user"] = $dados["nome"];
