@@ -56,8 +56,8 @@ include 'navbar.php';
             <div class="d-grid gap-2 col-2 mx-auto">
               <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">Novo Treinador</button>
             </div>
-            <form class="d-flex justify-content-start" role="search">
-              <img src="https://cdn.icon-icons.com/icons2/1189/PNG/512/1490793870-user-interface25_82355.png" alt="Ícone de Pesquisa" style="width: 38px; height: 38px; margin-right: 10px;" />
+            <form class="d-flex justify-content-start align-items-center" role="search">
+              <img src="css/lupa.png" alt="Ícone de Pesquisa" style="width: 20px; height: 20px; margin-right: 10px; " />
               <input class="form-control me-2" type="search" id="search" placeholder="Digite sua pesquisa..." style="width: 250px;" aria-label="Search">
             </form>
           </div>

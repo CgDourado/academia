@@ -16,5 +16,5 @@ if (empty($_SESSION["user"])) {
         echo "<a href='treinadores_html.php' style='color: black; text-decoration: none; font-weight: bold;'>Treinadores</a>";
     }
     echo "<b><font color='black'> | </font></b>";
-    echo "<a href='.php' style='color: black; text-decoration: none; font-weight: bold;'>Planos</a>";
+    echo "<a href='planos.php' style='color: black; text-decoration: none; font-weight: bold;'>Planos</a>";
 }
