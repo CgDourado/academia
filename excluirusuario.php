@@ -12,7 +12,7 @@
     } else {
         mysqli_rollback($conn);
         echo "<script language='javascript' type='text/javascript'>
-        alert('Não foi possivel fazer o cadastro!');
+        alert('Não foi possivel Excluir!');
         window.location.href='usuarios_html.php';
         </script>";
     }

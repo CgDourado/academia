@@ -14,7 +14,7 @@
     } else {
         $criar = mysqli_query($conn, "INSERT INTO dono(nome, login, senha) VALUES ('$nome','$login','$senha')") or die("Erro ao selecionar");
         echo ("<script>alert('Cadastro Feito com Sucesso');</script>");
-        echo ("<script>window.location.replace('conta.php');</script>");
+        echo ("<script>window.location.replace('inicio.php');</script>");
         mysqli_close($conn);
     }
 ?>

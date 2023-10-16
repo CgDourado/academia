@@ -18,17 +18,22 @@ include 'navbar.php';
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Biblioteca</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <style>
     .header {
       float: right;
+    }
+
+    .name-column:hover {
+      cursor: pointer;
+      text-decoration: underline;
     }
   </style>
 </head>
 
 <body>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
   <div class="container-fluid">
     <br><br>
     <div class="row row-cols-2 row-cols-md-1 mb-3 text-center">
@@ -36,16 +41,20 @@ include 'navbar.php';
         <div class="card mb-4 rounded-3 shadow-sm">
           <div class="card-header py-2">
             <h4 class="my-0 fw-normal"><b><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-square" viewBox="0 0 16 16">
-            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z" />
-            </svg>&nbsp;&nbsp;Clientes</b></h4><br />
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z" />
+              </svg>&nbsp;&nbsp;Clientes</b></h4><br />
+            <form class="d-flex justify-content-start align-items-center" role="search">
+              <img src="css/lupa.png" alt="Ícone de Pesquisa" style="width: 20px; height: 20px; margin-right: 10px; " />
+              <input class="form-control me-2" type="search" id="search" placeholder="Digite sua pesquisa..." style="width: 250px;" aria-label="Search">
+            </form>
           </div>
           <div class="card-body">
-            <table class="table table-hover">
+            <table id="clienteTableT" class="table table-hover">
               <thead>
                 <tr>
                   <th scope="col">ID</th>
-                  <th scope="col">Nome</th>
+                  <th scope="col" class="sortable1 name-column">Nome 🔽</th>
                   <th scope="col">Peso</th>
                   <th scope="col">Altura</th>
                   <th scope="col">IMC</th>
@@ -125,6 +134,57 @@ include 'navbar.php';
       </div>
     </div>
   </div>
+  <script>
+    $(document).ready(function() {
+      $("#searcht").on("keyup", function() {
+        var searchTerm = $(this).val().toLowerCase();
+        $("#clienteTableT tbody tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(searchTerm) > -1);
+        });
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+      var ordenacao = 0; // 0: Ordenação original, 1: A-Z, 2: Z-A
+
+      $('.sortable1').click(function() {
+        ordenacao = (ordenacao + 1) % 4;
+        ordenarTabela(ordenacao);
+      });
+
+      function ordenarTabela(ordenacao) {
+        var rows = $('#clienteTableT tbody tr').get();
+
+        if (ordenacao === 1) {
+          // Ordenar por Nome A-Z
+          rows.sort(function(a, b) {
+            var nomeA = $(a).find('td:eq(1)').text().toUpperCase();
+            var nomeB = $(b).find('td:eq(1)').text().toUpperCase();
+            return nomeA.localeCompare(nomeB);
+          });
+        } else if (ordenacao === 2) {
+          // Ordenar por Nome Z-A
+          rows.sort(function(a, b) {
+            var nomeA = $(a).find('td:eq(1)').text().toUpperCase();
+            var nomeB = $(b).find('td:eq(1)').text().toUpperCase();
+            return nomeB.localeCompare(nomeA);
+          });
+        } else if (ordenacao === 3) {
+          // Ordenar por ID
+          rows.sort(function(a, b) {
+            var idA = parseInt($(a).find('td:eq(0)').text());
+            var idB = parseInt($(b).find('td:eq(0)').text());
+            return idA - idB;
+          });
+        }
+
+        $.each(rows, function(index, row) {
+          $('#clienteTableT tbody').append(row);
+        });
+      }
+    });
+  </script>
 </body>
 
 </html>

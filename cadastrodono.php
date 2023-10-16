@@ -1,5 +1,11 @@
 <?php
 session_start();
+if (!isset($_SESSION["user"])) {
+  echo "<script language='javascript' type='text/javascript'>
+    window.location.href='index.php';
+    </script>";
+  exit;
+}
 include 'cabecalho.php';
 ?>
 <!DOCTYPE html>
@@ -35,13 +41,13 @@ include 'cabecalho.php';
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <div class="container-fluid" style="border: none;">
-    <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="48px" fill="currentColor" class="bi bi-arrow-left" onclick="goBack()" viewBox="0 0 16 16">
-      <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146ZM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5Z" />
+    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="48" fill="currentColor" class="bi bi-arrow-left-square" onclick="goBack()" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm11.5 5.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
     </svg>
 
     <script>
       function goBack() {
-        window.location.href = 'index.php';
+        window.history.back();
       }
     </script>
     <br>
@@ -74,8 +80,8 @@ include 'cabecalho.php';
               </div>
               <br /><br />
               <button type="submit" aria-disabled="false" role="button" tabindex="0" style="user-select: none; border: none; transition: background 20ms ease-in 0s; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; height: 36px; border-radius: 4px; color: rgb(111, 191, 132); font-size: 14px; line-height: 1; padding-left: 12px; padding-right: 12px; font-weight: 500; background: rgb(217, 255, 227); box-shadow: rgba(15, 15, 15, 0.1) 0px 1px 2px, rgba(111, 191, 132, 0.3) 0px 0px 0px 1px inset; margin-top: 6px; margin-bottom: 12px; width: 100%;">Criar Conta</button>
-              <hr>
-              <h6>Tem uma conta? &nbsp&nbsp<button type="button" class="btn btn-secondary btn-sm" onclick="window.location.href='conta.php'">Fazer Login</button></h6>
+              <!-- <hr>
+              <h6>Tem uma conta? &nbsp&nbsp<button type="button" class="btn btn-secondary btn-sm" onclick="window.location.href='conta.php'">Fazer Login</button></h6> -->
             </form>
           </div>
         </div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 06/10/2023 às 04:11
+-- Tempo de geração: 16/10/2023 às 02:55
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.2.4
 
@@ -40,6 +40,19 @@ CREATE TABLE `dono` (
 
 INSERT INTO `dono` (`id`, `nome`, `login`, `senha`) VALUES
 (1, 'Cariani Junior', 'carianij', 'cj123');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `treinadores`
+--
+
+CREATE TABLE `treinadores` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(120) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `senha` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -87,6 +100,12 @@ ALTER TABLE `dono`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Índices de tabela `treinadores`
+--
+ALTER TABLE `treinadores`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Índices de tabela `treinos`
 --
 ALTER TABLE `treinos`
@@ -106,7 +125,13 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de tabela `dono`
 --
 ALTER TABLE `dono`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de tabela `treinadores`
+--
+ALTER TABLE `treinadores`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `treinos`
