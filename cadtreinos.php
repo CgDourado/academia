@@ -16,7 +16,7 @@
         </script>";
     } else {
         echo "<script language='javascript' type='text/javascript'>
-        alert('Não foi possivel fazer o cadastro!');
+        alert('Não foi possivel fazer o cadastro do treino!');
         window.location.href='treinos.php';
         </script>";
     }
