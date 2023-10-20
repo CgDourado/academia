@@ -76,16 +76,16 @@ include 'navbar.php';
                     echo '<td>' . $registro['altura'] . '</td>';
                     echo '<td>' . $registro['imc'] . '</td>';
 
-                    echo '<td><a href="cadtreinos.php?id=' . $id . '" data-bs-toggle="modal" data-id="' . $id . '" data-bs-target="#exampleModal' . $id . '" style="text-decoration: none;" data-bs-toggle="tooltip" title="Criar Treinos">✏️</a> | 
+                    echo '<td><a href="cadtreinos.php?id=' . $id . '" data-bs-toggle="modal" data-id="' . $id . '" data-bs-target="#exampleModalC' . $id . '" style="text-decoration: none;" data-bs-toggle="tooltip" title="Criar Treinos">✏️</a> | 
                     <a href="vertreino.php?id=' . $id . '" data-bs-toggle="modal" data-id="' . $id . '" 
                     data-bs-target="#exampleModalT' . $id . '"style="text-decoration: none;" data-bs-toggle="tooltip" title="Ver Treinos">📋</a>
                     </td>';
                     echo '</tr>';
-                    echo '<div class="modal fade" id="exampleModal' . $id . '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">';
+                    echo '<div class="modal fade" id="exampleModalC' . $id . '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">';
                     echo '<div class="modal-dialog modal-dialog-centered">';
                     echo '<div class="modal-content">';
                     echo '<div class="modal-header">';
-                    echo '<h5 class="modal-title" id="exampleModalLabel">Criar Treino</h5>';
+                    echo '<h5 class="modal-title" id="exampleModalLabel">Treino</h5>';
                     echo '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
                     echo '</div>';
                     echo '<div class="modal-body">';
@@ -107,13 +107,19 @@ include 'navbar.php';
                     echo '<div class="modal-dialog modal-dialog-centered">';
                     echo '<div class="modal-content">';
                     echo '<div class="modal-header">';
-                    echo '<h5 class="modal-title" id="exampleModalLabel">Criar Treino</h5>';
+                    echo '<h5 class="modal-title" id="exampleModalLabel">Ver Treino</h5>';
                     echo '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
                     echo '</div>';
                     echo '<div class="modal-body">';
                     include 'vertreino.php';
                     echo '<div class="modal-footer">';
-                    echo '<button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Fechar</button>';
+                    echo '<div style="display: flex; align-items: center;">
+                      <a href="!!!!!!!!!!!.php?id=' . $id . '" style="text-decoration: none; display: flex; align-items: center; margin-right: 10px;" data-bs-toggle="tooltip" title="Compartilhar">
+                        <span style="font-size: 24px; cursor: pointer;">📩</span>
+                      </a><a href="excluirtreino.php?id=' . $id . '" style="text-decoration: none; display: flex; align-items: center;" data-bs-toggle="tooltip" title="Excluir">
+                        <span style="font-size: 24px; cursor: pointer;">🗑️</span>
+                      </a>
+                    </div>';
                     echo '</div>';
                     echo '</div>';
                     echo '</div>';
@@ -147,7 +153,7 @@ include 'navbar.php';
               <form action="cadtreinos.php?id=<?php echo $id; ?>" method="POST">
                 <div class="form-group">
                   <label>Digite o Treino:</label>
-                  <textarea type="text" class="form-control" rows="10" name="treino" style='margin-top: 10px' required /></textarea>
+                  <textarea type="text" class="form-control" rows="10" name="treino" style='margin-top: 10px' required></textarea>
                   <br />
                   <div class="d-grid gap-2 col-20 mx-auto">
                     <button type="submit" class="btn btn-success">Adicionar Treino</button>

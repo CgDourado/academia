@@ -72,7 +72,7 @@ while ($dados = $query->fetch_array()) {
         <div class="col">
           <label for="plano">Plano:</label>
           <select id="plano" name="plano" class="form-select" aria-label="Default select example">
-            <option value="..." <?php echo ($plano == '' ? 'selected' : ''); ?>>...</option>
+            <option value="..." <?php echo ($plano == '' ? 'selected' : ''); ?> disabled>...</option>
             <option value="Anual" <?php echo ($plano == 'Anual' ? 'selected' : ''); ?>>Anual</option>
             <option value="Mensal" <?php echo ($plano == 'Mensal' ? 'selected' : ''); ?>>Mensal</option>
           </select>
@@ -80,7 +80,7 @@ while ($dados = $query->fetch_array()) {
         <div class="col">
           <label for="pagamento">Pagamento:</label>
           <select id="pagamento" name="pagamento" class="form-select" aria-label="Default select example">
-            <option value="..." <?php echo ($pagamento == '' ? 'selected' : ''); ?>>...</option>
+            <option value="..." <?php echo ($pagamento == '' ? 'selected' : ''); ?> disabled>...</option>
             <option value="Pago" <?php echo ($pagamento == 'Pago' ? 'selected' : ''); ?>>Pago</option>
             <option value="A Pagar" <?php echo ($pagamento == 'A Pagar' ? 'selected' : ''); ?>>A Pagar</option>
             <option value="Negociando" <?php echo ($pagamento == 'Negociando' ? 'selected' : ''); ?>>Negociando</option>

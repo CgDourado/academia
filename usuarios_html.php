@@ -186,16 +186,16 @@ include 'navbar.php';
               <div class="row">
                 <div class="col">
                   <label for="plano">Plano:</label>
-                  <select id="plano" name="plano" class="form-select" aria-label="Default select example">
-                    <option selected>...</option>
+                  <select id="plano" name="plano" class="form-select" aria-label="Default select example" required>
+                    <option value="" selected disabled>...</option>
                     <option value="Anual">Anual</option>
                     <option value="Mensal">Mensal</option>
                   </select>
                 </div>
                 <div class="col">
                   <label for="pagamento">Pagamento:</label>
-                  <select id="pagamento" name="pagamento" class="form-select" aria-label="Default select example">
-                    <option selected>...</option>
+                  <select id="pagamento" name="pagamento" class="form-select" aria-label="Default select example" required>
+                    <option value="" selected disabled>...</option>
                     <option value="Pago">Pago</option>
                     <option value="A Pagar">A Pagar</option>
                     <option value="Negociando">Negociando</option>
@@ -208,6 +208,20 @@ include 'navbar.php';
               </div>
             </div>
           </form>
+          <script>
+            // Verifica se uma opção válida foi selecionada para 'plano' e 'pagamento'
+            document.getElementById('plano').addEventListener('change', function() {
+              if (this.value === "") {
+                alert("Por favor, selecione uma opção válida para Plano.");
+              }
+            });
+
+            document.getElementById('pagamento').addEventListener('change', function() {
+              if (this.value === "") {
+                alert("Por favor, selecione uma opção válida para Pagamento.");
+              }
+            });
+          </script>
           <script>
             $(document).ready(function() {
               // Initialize the form submission event handler
@@ -280,8 +294,6 @@ include 'navbar.php';
               $(this).show();
             } else if (ordenacao === 3 && pagamento === 'Negociando') {
               $(this).show();
-            } else if (ordenacao === 4 && pagamento === '...') {
-              $(this).show();
             }
           });
         }
@@ -339,9 +351,6 @@ include 'navbar.php';
       }
     });
   </script>
-
-
-
 </body>
 
 </html>

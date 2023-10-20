@@ -15,17 +15,19 @@ while ($dados = $query->fetch_array()) {
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 </head>
+
 <body>
   <form action="cadtreinos.php?id=<?php echo $id; ?>" method="POST">
     <div class="form-group">
       <br />
-      <label>Visualize ou Edite o Treino:</label>
-      <textarea type="text" class="form-control" rows="10" name="treino" id="treino" style='margin-top: 10px'><?php echo $treino; ?></textarea>
+      <label>Visualizar o Treino:</label>
+      <textarea type="text" class="form-control" rows="10" name="treino" id="treino" style='margin-top: 10px' readonly><?php echo $treino; ?></textarea>
       <br />
-      <div class="d-grid gap-2 col-20 mx-auto">
+      <!-- <div class="d-grid gap-2 col-20 mx-auto">
         <button type="submit" class="btn btn-success">Editar</button>
-      </div>
+      </div> -->
     </div>
   </form>
 </body>
+
 </html>

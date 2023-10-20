@@ -40,12 +40,12 @@ include 'navbar.php';
     <div class="row justify-content-center row-cols-1 row-cols-md-3 mb-3 text-center">
       <div class="col" style="max-width: 1000px;">
         <div class="card mb-4 rounded-3 shadow-sm: 0" style="border: none;">
-          <div style="font-size: 50px; margin-top: 12vh; font-weight: 700; margin-bottom: 24px; text-align: center; line-height: 1.1; max-width: 1200px;">
-            <?php
-            $usuario = $_SESSION["user"];
-            echo "<font color='black'>Olá, " . $usuario . ".</font>";
-            ?>
-          </div>
+          <!-- <div style="font-size: 50px; margin-top: 12vh; font-weight: 700; margin-bottom: 24px; text-align: center; line-height: 1.1; max-width: 1200px;">
+            //<?php
+            //$usuario = $_SESSION["user"];
+            //echo "<font color='black'>Olá, " . $usuario . ".</font>";
+            //?>
+          </div> -->
         </div>
       </div>
     </div>
