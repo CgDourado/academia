@@ -106,7 +106,7 @@ include 'navbar.php';
                     echo '<div class="modal-dialog modal-dialog-centered">';
                     echo '<div class="modal-content">';
                     echo '<div class="modal-header">';
-                    echo '<h5 class="modal-title" id="exampleModalLabel">Editar Usuáro</h5>';
+                    echo '<h5 class="modal-title" id="exampleModalLabel1">Editar Usuáro</h5>';
                     echo '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
                     echo '</div>';
                     echo '<div class="modal-body">';
