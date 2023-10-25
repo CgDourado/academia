@@ -16,14 +16,20 @@
     }
     $pagamento = $_POST['pagamento'];
     $plano = $_POST['plano'];
+
+    // Calculate age based on the date of birth
+    $birth_date = DateTime::createFromFormat('d/m/Y', $data_nascimento);
+    $current_date = new DateTime();
+    $age = $current_date->diff($birth_date)->y;
+
     mysqli_begin_transaction($conn);
-    $sql1 = "UPDATE usuario SET nome=?,email=?,telefone=?,cpf=?,data_nascimento=?,peso=?,altura=?,imc=?,pagamento=?,plano=? WHERE id=?";
+    $sql1 = "UPDATE usuario SET nome=?,email=?,telefone=?,cpf=?,data_nascimento=?,idade=?,peso=?,altura=?,imc=?,pagamento=?,plano=? WHERE id=?";
     $stmt1 = $conn->prepare($sql1) or die($conn->error);
     if (!$stmt1) {
         echo "Error na atualização!".$conn->errno.'-'.$conn->error;
     }
     $nascimento = DateTime::createFromFormat('d/m/Y', $data_nascimento)->format('Y-m-d');
-    $stmt1->bind_param('ssssssssssi',$nome,$email,$telefone,$cpf,$nascimento,$peso,$altura,$imc,$pagamento,$plano,$id);;
+    $stmt1->bind_param('sssssssssssi',$nome,$email,$telefone,$cpf,$nascimento,$age,$peso,$altura,$imc,$pagamento,$plano,$id);;
     $stmt1->execute();
     $stmt1->close();
     $sql2 = "UPDATE treinos SET nome=?,peso=?,altura=?,imc=? WHERE id=?";

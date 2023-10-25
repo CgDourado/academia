@@ -70,6 +70,7 @@ include 'navbar.php';
                   <th scope="col">Telefone</th>
                   <th scope="col">CPF</th>
                   <th scope="col">Data de Nascimento</th>
+                  <th scope="col">Idade</th>
                   <th scope="col">Peso</th>
                   <th scope="col">Altura</th>
                   <th scope="col">IMC</th>
@@ -95,6 +96,7 @@ include 'navbar.php';
                     $convert_data_nascimento = strtotime($registro['data_nascimento']);
                     $nascimento = date('d/m/Y', $convert_data_nascimento);
                     echo '<td>' . $nascimento . '</td>';
+                    echo '<td>' . $registro['idade'] . '</td>';          
                     echo '<td>' . $registro['peso'] . '</td>';
                     echo '<td>' . $registro['altura'] . '</td>';
                     echo '<td>' . $registro['imc'] . '</td>';
