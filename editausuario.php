@@ -49,12 +49,7 @@ while ($dados = $query->fetch_array()) {
       </script>
       <br />
       <label>CPF</label>
-      <input type="cpf" class="form-control cpf-field" id="cpf" name="cpf" value="<?php echo $cpf; ?>" required />
-      <script>
-        $(document).on('focus', '#cpf', function() {
-          $(this).mask('000.000.000-00');
-        });
-      </script>
+      <input type="cpf" class="form-control cpf-field" id="cpf" name="cpf" value="<?php echo $cpf; ?>" required readonly/>
       <br />
       <label>Ano de Nascimento</label>
       <input type="text" class="form-control" id='data_nascimento' name="data_nascimento" placeholder="Insira a Data de Nascimento" value="<?php echo $nascimento; ?>" required />
