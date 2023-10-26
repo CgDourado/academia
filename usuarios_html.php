@@ -17,12 +17,11 @@ include 'navbar.php';
   <meta http-equiv="content-language" content="pt-br">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-brasil/js-brasil.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
   <style>
     .header {
@@ -71,6 +70,7 @@ include 'navbar.php';
                   <th scope="col">CPF</th>
                   <th scope="col">Data de Nascimento</th>
                   <th scope="col">Idade</th>
+                  <th scope="col">Gênero</th>
                   <th scope="col">Peso</th>
                   <th scope="col">Altura</th>
                   <th scope="col">IMC</th>
@@ -96,7 +96,8 @@ include 'navbar.php';
                     $convert_data_nascimento = strtotime($registro['data_nascimento']);
                     $nascimento = date('d/m/Y', $convert_data_nascimento);
                     echo '<td>' . $nascimento . '</td>';
-                    echo '<td>' . $registro['idade'] . '</td>';          
+                    echo '<td>' . $registro['idade'] . '</td>';
+                    echo '<td>' . $registro['genero'] . '</td>';
                     echo '<td>' . $registro['peso'] . '</td>';
                     echo '<td>' . $registro['altura'] . '</td>';
                     echo '<td>' . $registro['imc'] . '</td>';
@@ -156,8 +157,8 @@ include 'navbar.php';
               <label>Telefone</label>
               <input type="tel" class="form-control" id='telefone' name="telefone" placeholder="Ex: (XX) XXXXX-XXXX" required />
               <script>
-                $(document).on('focus', '#telefone', function() {
-                  $(this).mask('(00) 00000-0000');
+                $(document).ready(function() {
+                  $('#telefone').mask('(00) 00000-0000');
                 });
               </script>
               <br />
@@ -172,8 +173,8 @@ include 'navbar.php';
               <label>Ano de Nascimento</label>
               <input type="text" class="form-control" id='data_nascimento' name="data_nascimento" placeholder="Insira a Data de Nascimento" required />
               <script>
-                $(document).on('focus', '#data_nascimento', function() {
-                  $(this).mask('00/00/0000');
+                $(document).ready(function() {
+                  $('#data_nascimento').mask('00/00/0000');
                 });
               </script>
               <br />
@@ -187,7 +188,19 @@ include 'navbar.php';
                   $(this).mask('0.00');
                 });
               </script>
-              <br>
+              <br />
+              <div class="row">
+                <div class="col">
+                  <label for="genero">Gênero:</label>
+                  <select id="genero" name="genero" class="form-select" aria-label="Default select example" required>
+                    <option value="" selected disabled>...</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Feminino">Feminino</option>
+                    <option value="Outro">Outro</option>
+                  </select>
+                </div>
+              </div>
+              <br />
               <div class="row">
                 <div class="col">
                   <label for="plano">Plano:</label>
@@ -207,7 +220,7 @@ include 'navbar.php';
                   </select>
                 </div>
               </div>
-              <br>
+              <br />
               <div class="d-grid gap-2 col-20 mx-auto">
                 <button type="submit" id="submit" class="btn btn-success cadastrar-button">Cadastrar</button>
               </div>
@@ -224,6 +237,14 @@ include 'navbar.php';
             document.getElementById('pagamento').addEventListener('change', function() {
               if (this.value === "") {
                 alert("Por favor, selecione uma opção válida para Pagamento.");
+              }
+            });
+          </script>
+          <script>
+            // Verifica se uma opção válida foi selecionada para 'genero'
+            document.getElementById('genero').addEventListener('change', function() {
+              if (this.value === "") {
+                alert("Por favor, selecione uma opção válida para o Gênero.");
               }
             });
           </script>
@@ -284,22 +305,52 @@ include 'navbar.php';
 
       function filtrarPagamento(ordenacao) {
         var rows = $('tbody tr');
-        var rowsPagamento = $('tbody tr td:eq(9)');
-        rows.hide();
+        rows.show(); // Mostrar todas as linhas
 
+        if (ordenacao === 1) {
+          rows.filter(function() {
+            return $(this).find('td:eq(11)').text().trim() !== 'Pago';
+          }).hide();
+        } else if (ordenacao === 2) {
+          rows.filter(function() {
+            return $(this).find('td:eq(11)').text().trim() !== 'A Pagar';
+          }).hide();
+        } else if (ordenacao === 3) {
+          rows.filter(function() {
+            return $(this).find('td:eq(11)').text().trim() !== 'Negociando';
+          }).hide();
+        }
+      }
+    });
+    $(document).ready(function() {
+      var ordenacao = 0;
+      var opcoesPagamento = ['Pago', 'A Pagar', 'Negociando'];
+      var tituloPagamento = 'Pagamento 🔽';
+
+      $('.sortable.payment-column').click(function() {
+        ordenacao = (ordenacao + 1) % (opcoesPagamento.length + 1); // Adiciona 2 para incluir a opção de "voltar ao normal" e a opção de ocultar tudo
+        filtrarPagamento(ordenacao);
+        atualizarTextoCabecalho(ordenacao);
+      });
+
+      function filtrarPagamento(ordenacao) {
+        var rows = $('tbody tr');
+        rows.show(); // Mostrar todas as linhas
+
+        if (ordenacao > 0 && ordenacao <= opcoesPagamento.length) {
+          rows.filter(function() {
+            return $(this).find('td:eq(11)').text().trim() !== opcoesPagamento[ordenacao - 1];
+          }).hide();
+        } else if (ordenacao === opcoesPagamento.length + 1) {
+          rows.hide(); // Ocultar tudo
+        }
+      }
+
+      function atualizarTextoCabecalho(ordenacao) {
         if (ordenacao === 0) {
-          rows.show();
+          $('.sortable.payment-column').text(tituloPagamento);
         } else {
-          rows.each(function() {
-            var pagamento = $(this).find('td:eq(9)').text();
-            if (ordenacao === 1 && pagamento === 'Pago') {
-              $(this).show();
-            } else if (ordenacao === 2 && pagamento === 'A Pagar') {
-              $(this).show();
-            } else if (ordenacao === 3 && pagamento === 'Negociando') {
-              $(this).show();
-            }
-          });
+          $('.sortable.payment-column').text(tituloPagamento + ' (' + opcoesPagamento[ordenacao - 1] + ')');
         }
       }
     });
@@ -316,31 +367,41 @@ include 'navbar.php';
   </script>
   <script>
     $(document).ready(function() {
-      var ordenacao = 0; // 0: Ordenação original, 1: A-Z, 2: Z-A
+      var ordenacaoNome = 0; // 0: Ordenação original, 1: A-Z, 2: Z-A, 3: Ordenar por ID
+      var tituloNome = 'Nome 🔽';
 
-      $('.sortable1').click(function() {
-        ordenacao = (ordenacao + 1) % 4;
-        ordenarTabela(ordenacao);
+      $('.sortable1.name-column').click(function() {
+        if (ordenacaoNome === 0) {
+          ordenacaoNome = 1;
+        } else if (ordenacaoNome === 1) {
+          ordenacaoNome = 2;
+        } else if (ordenacaoNome === 2) {
+          ordenacaoNome = 3;
+        } else {
+          ordenacaoNome = 1;
+        }
+        ordenarTabelaPorNome(ordenacaoNome);
+        atualizarTextoCabecalho(ordenacaoNome);
       });
 
-      function ordenarTabela(ordenacao) {
+      function ordenarTabelaPorNome(ordenacaoNome) {
         var rows = $('#clienteTable tbody tr').get();
 
-        if (ordenacao === 1) {
+        if (ordenacaoNome === 1) {
           // Ordenar por Nome A-Z
           rows.sort(function(a, b) {
             var nomeA = $(a).find('td:eq(1)').text().toUpperCase();
             var nomeB = $(b).find('td:eq(1)').text().toUpperCase();
             return nomeA.localeCompare(nomeB);
           });
-        } else if (ordenacao === 2) {
+        } else if (ordenacaoNome === 2) {
           // Ordenar por Nome Z-A
           rows.sort(function(a, b) {
             var nomeA = $(a).find('td:eq(1)').text().toUpperCase();
             var nomeB = $(b).find('td:eq(1)').text().toUpperCase();
             return nomeB.localeCompare(nomeA);
           });
-        } else if (ordenacao === 3) {
+        } else if (ordenacaoNome === 3) {
           // Ordenar por ID
           rows.sort(function(a, b) {
             var idA = parseInt($(a).find('td:eq(0)').text());
@@ -353,8 +414,23 @@ include 'navbar.php';
           $('#clienteTable tbody').append(row);
         });
       }
+
+      function atualizarTextoCabecalho(ordenacaoNome) {
+        var textoOrdenacao = '';
+        if (ordenacaoNome === 1) {
+          textoOrdenacao = 'A-Z';
+        } else if (ordenacaoNome === 2) {
+          textoOrdenacao = 'Z-A';
+        }
+        // Para ordenação por ID, mantenha o título original
+        var titulo = ordenacaoNome === 3 ? tituloNome : tituloNome + ' (' + textoOrdenacao + ')';
+        $('.sortable1.name-column').text(titulo);
+      }
     });
   </script>
 </body>
 
 </html>
+
+
+AQUI TA BOM

@@ -13,8 +13,10 @@ function calcularIMC($peso, $altura) {
     $imc = round($imc, 2);
     return $imc;
 }
+$genero = $_POST['genero'];
 $pagamento = $_POST['pagamento'];
 $plano = $_POST['plano'];
+
 
 // Calculate age based on the date of birth
 $birth_date = DateTime::createFromFormat('d/m/Y', $data_nascimento);
@@ -31,7 +33,7 @@ if(mysqli_num_rows($query) > 0){
 } else {
     mysqli_begin_transaction($conn);
     $nascimento = $birth_date->format('Y-m-d');
-    $sql1 = "INSERT INTO usuario(nome, email, telefone, cpf, data_nascimento, idade, peso, altura, imc, pagamento, plano) VALUES ('$nome','$email','$telefone','$cpf','$nascimento','$age','$peso','$altura', '$imc','$pagamento','$plano')";
+    $sql1 = "INSERT INTO usuario(nome, email, telefone, cpf, data_nascimento, idade, peso, altura, genero, imc, pagamento, plano) VALUES ('$nome','$email','$telefone','$cpf','$nascimento','$age','$peso','$altura','$genero','$imc','$pagamento','$plano')";
     $sql2 = "INSERT INTO treinos(nome, peso, altura, imc) VALUES ('$nome','$peso','$altura', '$imc')";
     if (mysqli_query($conn, $sql1) && mysqli_query($conn, $sql2)) {
         mysqli_commit($conn);

@@ -15,6 +15,7 @@ while ($dados = $query->fetch_array()) {
   $nascimento = date('d/m/Y', $convert_data_nascimento);
   $pagamento = $dados['pagamento'];
   $plano = $dados['plano'];
+  $genero = $dados['genero'];
 }
 ?>
 
@@ -23,12 +24,11 @@ while ($dados = $query->fetch_array()) {
 
 <head>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-brasil/js-brasil.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -49,7 +49,7 @@ while ($dados = $query->fetch_array()) {
       </script>
       <br />
       <label>CPF</label>
-      <input type="cpf" class="form-control cpf-field" id="cpf" name="cpf" value="<?php echo $cpf; ?>" required readonly/>
+      <input type="cpf" class="form-control cpf-field" id="cpf" name="cpf" value="<?php echo $cpf; ?>" required readonly />
       <br />
       <label>Ano de Nascimento</label>
       <input type="text" class="form-control" id='data_nascimento' name="data_nascimento" placeholder="Insira a Data de Nascimento" value="<?php echo $nascimento; ?>" required />
@@ -67,9 +67,21 @@ while ($dados = $query->fetch_array()) {
       <br>
       <div class="row">
         <div class="col">
+          <label for="genero">Gênero:</label>
+          <select id="genero" name="genero" class="form-select" aria-label="Default select example">
+            <option value="..." <?php echo ($genero == '' ? 'selected' : ''); ?> selected disabled>...</option>
+            <option value="Masculino" <?php echo ($genero == 'Masculino' ? 'selected' : ''); ?>>Masculino</option>
+            <option value="Feminino" <?php echo ($genero == 'Feminino' ? 'selected' : ''); ?>>Feminino</option>
+            <option value="Outro" <?php echo ($genero == 'Outro' ? 'selected' : ''); ?>>Outro</option>
+          </select>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col">
           <label for="plano">Plano:</label>
           <select id="plano" name="plano" class="form-select" aria-label="Default select example">
-            <option value="..." <?php echo ($plano == '' ? 'selected' : ''); ?> disabled>...</option>
+            <option value="..." <?php echo ($plano == '' ? 'selected' : ''); ?> selected disabled>...</option>
             <option value="Anual" <?php echo ($plano == 'Anual' ? 'selected' : ''); ?>>Anual</option>
             <option value="Mensal" <?php echo ($plano == 'Mensal' ? 'selected' : ''); ?>>Mensal</option>
           </select>
@@ -77,7 +89,7 @@ while ($dados = $query->fetch_array()) {
         <div class="col">
           <label for="pagamento">Pagamento:</label>
           <select id="pagamento" name="pagamento" class="form-select" aria-label="Default select example">
-            <option value="..." <?php echo ($pagamento == '' ? 'selected' : ''); ?> disabled>...</option>
+            <option value="..." <?php echo ($pagamento == '' ? 'selected' : ''); ?> selected disabled>...</option>
             <option value="Pago" <?php echo ($pagamento == 'Pago' ? 'selected' : ''); ?>>Pago</option>
             <option value="A Pagar" <?php echo ($pagamento == 'A Pagar' ? 'selected' : ''); ?>>A Pagar</option>
             <option value="Negociando" <?php echo ($pagamento == 'Negociando' ? 'selected' : ''); ?>>Negociando</option>
