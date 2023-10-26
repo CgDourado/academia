@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 16/10/2023 às 02:55
+-- Tempo de geração: 26/10/2023 às 17:50
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.2.4
 
@@ -82,6 +82,7 @@ CREATE TABLE `usuario` (
   `telefone` varchar(20) NOT NULL,
   `cpf` varchar(15) NOT NULL,
   `data_nascimento` date NOT NULL,
+  `idade` int(5) NOT NULL,
   `peso` varchar(15) NOT NULL,
   `altura` varchar(15) NOT NULL,
   `imc` varchar(15) NOT NULL,
@@ -131,7 +132,7 @@ ALTER TABLE `dono`
 -- AUTO_INCREMENT de tabela `treinadores`
 --
 ALTER TABLE `treinadores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `treinos`
