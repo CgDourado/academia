@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 26/10/2023 às 17:50
+-- Tempo de geração: 27/10/2023 às 20:32
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.2.4
 
@@ -85,6 +85,7 @@ CREATE TABLE `usuario` (
   `idade` int(5) NOT NULL,
   `peso` varchar(15) NOT NULL,
   `altura` varchar(15) NOT NULL,
+  `sexo` varchar(20) NOT NULL,
   `imc` varchar(15) NOT NULL,
   `pagamento` varchar(20) NOT NULL,
   `plano` varchar(20) NOT NULL
