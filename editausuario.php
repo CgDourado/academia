@@ -15,7 +15,7 @@ while ($dados = $query->fetch_array()) {
   $nascimento = date('d/m/Y', $convert_data_nascimento);
   $pagamento = $dados['pagamento'];
   $plano = $dados['plano'];
-  $genero = $dados['genero'];
+  $sexo = $dados['sexo'];
 }
 ?>
 
@@ -67,12 +67,12 @@ while ($dados = $query->fetch_array()) {
       <br>
       <div class="row">
         <div class="col">
-          <label for="genero">Gênero:</label>
-          <select id="genero" name="genero" class="form-select" aria-label="Default select example">
-            <option value="..." <?php echo ($genero == '' ? 'selected' : ''); ?> selected disabled>...</option>
-            <option value="Masculino" <?php echo ($genero == 'Masculino' ? 'selected' : ''); ?>>Masculino</option>
-            <option value="Feminino" <?php echo ($genero == 'Feminino' ? 'selected' : ''); ?>>Feminino</option>
-            <option value="Outro" <?php echo ($genero == 'Outro' ? 'selected' : ''); ?>>Outro</option>
+          <label for="sexo">Sexo:</label>
+          <select id="sexo" name="sexo" class="form-select" aria-label="Default select example" required>
+            <option value="" <?php echo ($sexo == '' ? 'selected' : ''); ?> selected disabled>...</option>
+            <option value="Homem" <?php echo ($sexo == 'Homem' ? 'selected' : ''); ?>>Homem</option>
+            <option value="Mulher" <?php echo ($sexo == 'Mulher' ? 'selected' : ''); ?>>Mulher</option>
+            <option value="Outro" <?php echo ($sexo == 'Outro' ? 'selected' : ''); ?>>Outro</option>
           </select>
         </div>
       </div>
@@ -137,6 +137,14 @@ while ($dados = $query->fetch_array()) {
 
       // Aplica a formatação quando o campo Nome perde o foco
       $(document).on('blur', '.nome-field', formatarNome);
+    });
+  </script>
+  <script>
+    // Verifica se uma opção válida foi selecionada para 'sexo'
+    document.getElementById('sexo').addEventListener('change', function() {
+      if (this.value === "") {
+        alert("Por favor, selecione uma opção válida para o Sexo.");
+      }
     });
   </script>
 </body>

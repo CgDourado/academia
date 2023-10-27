@@ -97,7 +97,7 @@ include 'navbar.php';
                     $nascimento = date('d/m/Y', $convert_data_nascimento);
                     echo '<td>' . $nascimento . '</td>';
                     echo '<td>' . $registro['idade'] . '</td>';
-                    echo '<td>' . $registro['genero'] . '</td>';
+                    echo '<td>' . $registro['sexo'] . '</td>';
                     echo '<td>' . $registro['peso'] . '</td>';
                     echo '<td>' . $registro['altura'] . '</td>';
                     echo '<td>' . $registro['imc'] . '</td>';
@@ -191,11 +191,11 @@ include 'navbar.php';
               <br />
               <div class="row">
                 <div class="col">
-                  <label for="genero">Gênero:</label>
-                  <select id="genero" name="genero" class="form-select" aria-label="Default select example" required>
+                  <label for="sexo">Sexo:</label>
+                  <select id="sexo" name="sexo" class="form-select" aria-label="Default select example" required>
                     <option value="" selected disabled>...</option>
-                    <option value="Masculino">Masculino</option>
-                    <option value="Feminino">Feminino</option>
+                    <option value="Homem">Homem</option>
+                    <option value="Mulher">Mulher</option>
                     <option value="Outro">Outro</option>
                   </select>
                 </div>
@@ -241,10 +241,10 @@ include 'navbar.php';
             });
           </script>
           <script>
-            // Verifica se uma opção válida foi selecionada para 'genero'
-            document.getElementById('genero').addEventListener('change', function() {
+            // Verifica se uma opção válida foi selecionada para 'sexo'
+            document.getElementById('sexo').addEventListener('change', function() {
               if (this.value === "") {
-                alert("Por favor, selecione uma opção válida para o Gênero.");
+                alert("Por favor, selecione uma opção válida para o Sexo.");
               }
             });
           </script>

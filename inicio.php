@@ -37,7 +37,11 @@ if ($conn->connect_error) {
       /* Defina a altura máxima desejada */
       overflow-y: auto;
     }
-    
+
+    .payment-column-home:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
   </style>
 </head>
 
@@ -73,23 +77,41 @@ if ($conn->connect_error) {
             </div>
             <div class="card-body">
               <?php
-              $sql = "SELECT genero, COUNT(*) AS quantidade FROM usuario GROUP BY genero";
+              $sql = "SELECT sexo, COUNT(*) AS quantidade FROM usuario GROUP BY sexo";
               $result = $conn->query($sql);
 
               if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                  $genero = $row["genero"];
-                  $quantidade = $row["quantidade"];
-                  $generoPlural = $quantidade > 1 ? $genero . 's' : $genero;
+                $homens = 0;
+                $mulheres = 0;
+                $outros = 0;
 
-                  echo "{$generoPlural}: $quantidade<br>";
+                while ($row = $result->fetch_assoc()) {
+                  $sexo = $row["sexo"];
+                  $quantidade = $row["quantidade"];
+
+                  if ($sexo === "Homem") {
+                    $homens += $quantidade;
+                  } elseif ($sexo === "Mulher") {
+                    $mulheres += $quantidade;
+                  } elseif ($sexo === "Outro") {
+                    $outros += $quantidade;
+                  }
                 }
+
+                $sexoPluralHomem = $homens > 1 ? "Homens" : "Homem";
+                $sexoPluralMulher = $mulheres > 1 ? "Mulheres" : "Mulher";
+                $sexoPluralOutro = $outros > 1 ? "Outros" : "Outro";
+
+                echo "{$sexoPluralHomem}: $homens<br>";
+                echo "{$sexoPluralMulher}: $mulheres<br>";
+                echo "{$sexoPluralOutro}: $outros<br>";
               } else {
                 echo "Nenhum cliente encontrado.";
               }
 
               $conn->close();
               ?>
+
               <center>
                 <?php
                 include 'conecta.php';
@@ -99,7 +121,7 @@ if ($conn->connect_error) {
                 }
 
                 // Consulta para obter as contagens masculinas e femininas
-                $sql = "SELECT genero, COUNT(*) AS quantidade FROM usuario GROUP BY genero";
+                $sql = "SELECT sexo, COUNT(*) AS quantidade FROM usuario GROUP BY sexo";
                 $result = $conn->query($sql);
                 ?>
 
@@ -114,22 +136,22 @@ if ($conn->connect_error) {
 
                   function drawChart() {
                     var data = new google.visualization.DataTable();
-                    data.addColumn('string', 'Gênero');
+                    data.addColumn('string', 'Sexo');
                     data.addColumn('number', 'Quantidade');
                     data.addRows([
                       <?php
                       if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
-                          $genero = $row["genero"];
+                          $sexo = $row["sexo"];
                           $quantidade = $row["quantidade"];
-                          echo "['{$genero}', {$quantidade}],";
+                          echo "['{$sexo}', {$quantidade}],";
                         }
                       }
                       ?>
                     ]);
 
                     var options = {
-                      title: 'Clientes por Gênero',
+                      title: 'Clientes por Sexo',
                       sliceVisibilityThreshold: 0.2,
                       is3D: true,
                     };
@@ -146,7 +168,7 @@ if ($conn->connect_error) {
           <div class="card shadow-sm">
             <div class="card-header">
               <h4 class="my-0 fw-normal"><b><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-diagram-3" viewBox="0 0 16 16">
-                    <path d="M5.5 13v1.25c0 .138.112.25.25.25h1a.25.25 0 0 0 .25-.25V13h.5v1.25c0 .138.112.25.25.25h1a.25.25 0 0 0 .25-.25V13h.084c1.992 0 3.416-1.033 3.416-2.82 0-1.502-1.007-2.323-2.186-2.44v-.088c.97-.242 1.683-.974 1.683-2.19C11.997 3.93 10.847 3 9.092 3H9V1.75a.25.25 0 0 0-.25-.25h-1a.25.25 0 0 0-.25.25V3h-.573V1.75a.25.25 0 0 0-.25-.25H5.75a.25.25 0 0 0-.25.25V3l-1.998.011a.25.25 0 0 0-.25.25v.989c0 .137.11.25.248.25l.755-.005a.75.75 0 0 1 .745.75v5.505a.75.75 0 0 1-.75.75l-.748.011a.25.25 0 0 0-.25.25v1c0 .138.112.25.25.25L5.5 13zm1.427-8.513h1.719c.906 0 1.438.498 1.438 1.312 0 .871-.575 1.362-1.877 1.362h-1.28V4.487zm0 4.051h1.84c1.137 0 1.756.58 1.756 1.524 0 .953-.626 1.45-2.158 1.45H6.927V8.539z" />
+                    <path d="M4 10.781c.148 1.667 1.513 2.85 3.591 3.003V15h1.043v-1.216c2.27-.179 3.678-1.438 3.678-3.3 0-1.59-.947-2.51-2.956-3.028l-.722-.187V3.467c1.122.11 1.879.714 2.07 1.616h1.47c-.166-1.6-1.54-2.748-3.54-2.875V1H7.591v1.233c-1.939.23-3.27 1.472-3.27 3.156 0 1.454.966 2.483 2.661 2.917l.61.162v4.031c-1.149-.17-1.94-.8-2.131-1.718H4zm3.391-3.836c-1.043-.263-1.6-.825-1.6-1.616 0-.944.704-1.641 1.8-1.828v3.495l-.2-.05zm1.591 1.872c1.287.323 1.852.859 1.852 1.769 0 1.097-.826 1.828-2.2 1.939V8.73l.348.086z"/>
                   </svg>&nbsp;&nbsp;Pagamentos</b></h4>
             </div>
             <div class="card-body table-container">
@@ -154,7 +176,7 @@ if ($conn->connect_error) {
                 <thead>
                   <tr>
                     <th scope="col">Nome</th>
-                    <th scope="col">Status do Pagamento</th>
+                    <th scope="col" class="sortable payment-column-home">Pagamento 🔽</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -194,6 +216,39 @@ if ($conn->connect_error) {
       </div>
     </div>
   </div>
+  <script>
+    $(document).ready(function() {
+      var ordenacao = 0;
+      var opcoesPagamento = ['A Pagar', 'Negociando'];
+      // var tituloPagamento = 'Pagamento 🔽';
+
+      $('.sortable.payment-column-home').click(function() {
+        ordenacao = (ordenacao + 1) % (opcoesPagamento.length + 1); // Adiciona 1 para incluir a opção de "voltar ao normal"
+        filtrarPagamento(ordenacao);
+        // atualizarTextoCabecalho(ordenacao);
+      });
+
+      function filtrarPagamento(ordenacao) {
+        var rows = $('tbody tr');
+        rows.show(); // Mostrar todas as linhas
+
+        if (ordenacao > 0 && ordenacao <= opcoesPagamento.length) {
+          var filtro = opcoesPagamento[ordenacao - 1];
+          rows.filter(function() {
+            return $(this).find('td:eq(1)').text().trim() !== filtro;
+          }).hide();
+        }
+      }
+
+      // function atualizarTextoCabecalho(ordenacao) {
+      //   if (ordenacao === 0) {
+      //     $('.sortable.payment-column-home').text(tituloPagamento);
+      //   } else {
+      //     $('.sortable.payment-column-home').text(tituloPagamento + ' (' + opcoesPagamento[ordenacao - 1] + ')');
+      //   }
+      // }
+    });
+  </script>
 </body>
 
 </html>
