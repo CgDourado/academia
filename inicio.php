@@ -8,6 +8,11 @@ if (!isset($_SESSION["user"])) {
 }
 include 'cabecalho.php';
 include 'navbar.php';
+include 'conecta.php';
+
+if ($conn->connect_error) {
+  die("Erro de conexão com o banco de dados: " . $conn->connect_error);
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -42,9 +47,10 @@ include 'navbar.php';
         <div class="card mb-4 rounded-3 shadow-sm: 0" style="border: none;">
           <!-- <div style="font-size: 50px; margin-top: 12vh; font-weight: 700; margin-bottom: 24px; text-align: center; line-height: 1.1; max-width: 1200px;">
             //<?php
-            //$usuario = $_SESSION["user"];
-            //echo "<font color='black'>Olá, " . $usuario . ".</font>";
-            //?>
+              //$usuario = $_SESSION["user"];
+              //echo "<font color='black'>Olá, " . $usuario . ".</font>";
+              //
+              ?>
           </div> -->
         </div>
       </div>
@@ -55,12 +61,76 @@ include 'navbar.php';
           <div class="card shadow-sm">
             <div class="card-header">
               <h4 class="my-0 fw-normal"><b><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-screwdriver" viewBox="0 0 16 16">
-                    <path d="m0 1 1-1 3.081 2.2a1 1 0 0 1 .419.815v.07a1 1 0 0 0 .293.708L10.5 9.5l.914-.305a1 1 0 0 1 1.023.242l3.356 3.356a1 1 0 0 1 0 1.414l-1.586 1.586a1 1 0 0 1-1.414 0l-3.356-3.356a1 1 0 0 1-.242-1.023L9.5 10.5 3.793 4.793a1 1 0 0 0-.707-.293h-.071a1 1 0 0 1-.814-.419L0 1zm11.354 9.646a.5.5 0 0 0-.708.708l3 3a.5.5 0 0 0 .708-.708l-3-3z" />
-                  </svg>&nbsp;&nbsp;Quadro 1</b></h4>
+                    <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                  </svg>&nbsp;&nbsp;Clientes</b></h4>
             </div>
             <div class="card-body">
+              <?php
+              $sql = "SELECT genero, COUNT(*) AS quantidade FROM usuario GROUP BY genero";
+              $result = $conn->query($sql);
+
+              if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                  $genero = $row["genero"];
+                  $quantidade = $row["quantidade"];
+                  $generoPlural = $quantidade > 1 ? $genero . 's' : $genero;
+
+                  echo "{$generoPlural}: $quantidade<br>";
+                }
+              } else {
+                echo "Nenhum cliente encontrado.";
+              }
+
+              $conn->close();
+              ?>
               <center>
-                <img src="css/home1.jpeg" width="200">
+                <?php
+                include 'conecta.php';
+
+                if ($conn->connect_error) {
+                  die("Erro de conexão com o banco de dados: " . $conn->connect_error);
+                }
+
+                // Consulta para obter as contagens masculinas e femininas
+                $sql = "SELECT genero, COUNT(*) AS quantidade FROM usuario GROUP BY genero";
+                $result = $conn->query($sql);
+                ?>
+
+                <div id="chart_div" style="width: 100%; height: 100%;"></div>
+
+                <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                <script type="text/javascript">
+                  google.charts.load('current', {
+                    'packages': ['corechart']
+                  });
+                  google.charts.setOnLoadCallback(drawChart);
+
+                  function drawChart() {
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Gênero');
+                    data.addColumn('number', 'Quantidade');
+                    data.addRows([
+                      <?php
+                      if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                          $genero = $row["genero"];
+                          $quantidade = $row["quantidade"];
+                          echo "['{$genero}', {$quantidade}],";
+                        }
+                      }
+                      ?>
+                    ]);
+
+                    var options = {
+                      title: 'Clientes por Gênero',
+                      sliceVisibilityThreshold: 0.2,
+                      is3D: true,
+                    };
+
+                    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+                    chart.draw(data, options);
+                  }
+                </script>
               </center>
             </div>
           </div>
@@ -69,12 +139,53 @@ include 'navbar.php';
           <div class="card shadow-sm">
             <div class="card-header">
               <h4 class="my-0 fw-normal"><b><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-diagram-3" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5v-1zM8.5 5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1zM0 11.5A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z" />
-                  </svg>&nbsp;&nbsp;Quadro 2</b></h4>
+                    <path d="M5.5 13v1.25c0 .138.112.25.25.25h1a.25.25 0 0 0 .25-.25V13h.5v1.25c0 .138.112.25.25.25h1a.25.25 0 0 0 .25-.25V13h.084c1.992 0 3.416-1.033 3.416-2.82 0-1.502-1.007-2.323-2.186-2.44v-.088c.97-.242 1.683-.974 1.683-2.19C11.997 3.93 10.847 3 9.092 3H9V1.75a.25.25 0 0 0-.25-.25h-1a.25.25 0 0 0-.25.25V3h-.573V1.75a.25.25 0 0 0-.25-.25H5.75a.25.25 0 0 0-.25.25V3l-1.998.011a.25.25 0 0 0-.25.25v.989c0 .137.11.25.248.25l.755-.005a.75.75 0 0 1 .745.75v5.505a.75.75 0 0 1-.75.75l-.748.011a.25.25 0 0 0-.25.25v1c0 .138.112.25.25.25L5.5 13zm1.427-8.513h1.719c.906 0 1.438.498 1.438 1.312 0 .871-.575 1.362-1.877 1.362h-1.28V4.487zm0 4.051h1.84c1.137 0 1.756.58 1.756 1.524 0 .953-.626 1.45-2.158 1.45H6.927V8.539z" />
+                  </svg>&nbsp;&nbsp;Pagamentos</b></h4>
             </div>
             <div class="card-body">
               <center>
-                <img src="css/home2.jpeg" width="200">
+                <?php
+                if ($conn->connect_error) {
+                  die("Conexão falhou: " . $conn->connect_error);
+                }
+
+                // Consulta SQL para obter nome e pagamento para "A pagar" e "Negociando"
+                $sql = "SELECT nome, pagamento FROM usuario WHERE pagamento IN ('A pagar', 'Negociando')";
+                $result = $conn->query($sql);
+
+                $data = array();
+                while ($row = $result->fetch_assoc()) {
+                  $data[] = array($row['nome'], $row['pagamento']);
+                }
+
+                $conn->close();
+                ?>
+
+                <div id="table_div" style="width: 100%; max-height: 272px; overflow-y: auto;"></div>
+
+                <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                <script type="text/javascript">
+                  google.charts.load('current', {
+                    'packages': ['table']
+                  });
+                  google.charts.setOnLoadCallback(drawTable);
+
+                  function drawTable() {
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Nome');
+                    data.addColumn('string', 'Status de Pagamento');
+
+                    data.addRows(<?php echo json_encode($data); ?>);
+
+                    var table = new google.visualization.Table(document.getElementById('table_div'));
+
+                    table.draw(data, {
+                      showRowNumber: true,
+                      width: '100%',
+                      height: '100%'
+                    });
+                  }
+                </script>
               </center>
             </div>
           </div>
