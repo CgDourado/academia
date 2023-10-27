@@ -31,6 +31,13 @@ if ($conn->connect_error) {
     .letra {
       font-size: small;
     }
+
+    .table-container {
+      max-height: 304px;
+      /* Defina a altura máxima desejada */
+      overflow-y: auto;
+    }
+    
   </style>
 </head>
 
@@ -142,51 +149,30 @@ if ($conn->connect_error) {
                     <path d="M5.5 13v1.25c0 .138.112.25.25.25h1a.25.25 0 0 0 .25-.25V13h.5v1.25c0 .138.112.25.25.25h1a.25.25 0 0 0 .25-.25V13h.084c1.992 0 3.416-1.033 3.416-2.82 0-1.502-1.007-2.323-2.186-2.44v-.088c.97-.242 1.683-.974 1.683-2.19C11.997 3.93 10.847 3 9.092 3H9V1.75a.25.25 0 0 0-.25-.25h-1a.25.25 0 0 0-.25.25V3h-.573V1.75a.25.25 0 0 0-.25-.25H5.75a.25.25 0 0 0-.25.25V3l-1.998.011a.25.25 0 0 0-.25.25v.989c0 .137.11.25.248.25l.755-.005a.75.75 0 0 1 .745.75v5.505a.75.75 0 0 1-.75.75l-.748.011a.25.25 0 0 0-.25.25v1c0 .138.112.25.25.25L5.5 13zm1.427-8.513h1.719c.906 0 1.438.498 1.438 1.312 0 .871-.575 1.362-1.877 1.362h-1.28V4.487zm0 4.051h1.84c1.137 0 1.756.58 1.756 1.524 0 .953-.626 1.45-2.158 1.45H6.927V8.539z" />
                   </svg>&nbsp;&nbsp;Pagamentos</b></h4>
             </div>
-            <div class="card-body">
-              <center>
-                <?php
-                if ($conn->connect_error) {
-                  die("Conexão falhou: " . $conn->connect_error);
-                }
-
-                // Consulta SQL para obter nome e pagamento para "A pagar" e "Negociando"
-                $sql = "SELECT nome, pagamento FROM usuario WHERE pagamento IN ('A pagar', 'Negociando')";
-                $result = $conn->query($sql);
-
-                $data = array();
-                while ($row = $result->fetch_assoc()) {
-                  $data[] = array($row['nome'], $row['pagamento']);
-                }
-
-                $conn->close();
-                ?>
-
-                <div id="table_div" style="width: 100%; max-height: 272px; overflow-y: auto;"></div>
-
-                <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-                <script type="text/javascript">
-                  google.charts.load('current', {
-                    'packages': ['table']
-                  });
-                  google.charts.setOnLoadCallback(drawTable);
-
-                  function drawTable() {
-                    var data = new google.visualization.DataTable();
-                    data.addColumn('string', 'Nome');
-                    data.addColumn('string', 'Status de Pagamento');
-
-                    data.addRows(<?php echo json_encode($data); ?>);
-
-                    var table = new google.visualization.Table(document.getElementById('table_div'));
-
-                    table.draw(data, {
-                      showRowNumber: true,
-                      width: '100%',
-                      height: '100%'
-                    });
+            <div class="card-body table-container">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Status do Pagamento</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  include 'conecta.php';
+                  $pesquisa = mysqli_query($conn, "SELECT * FROM usuario");
+                  $row = mysqli_num_rows($pesquisa);
+                  if ($row > 0) {
+                    while ($registro = $pesquisa->fetch_array()) {
+                      $id = $registro['id'];
+                      echo '<tr>';
+                      echo '<td>' . $registro['nome'] . '</td>';
+                      echo '<td>' . $registro['pagamento'] . '</td>';
+                    }
                   }
-                </script>
-              </center>
+                  ?>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
