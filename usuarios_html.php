@@ -22,6 +22,8 @@ include 'navbar.php';
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
+
 
   <style>
     .header {
@@ -70,7 +72,7 @@ include 'navbar.php';
                   <th scope="col">CPF</th>
                   <th scope="col">Data de Nascimento</th>
                   <th scope="col">Idade</th>
-                  <th scope="col">Gênero</th>
+                  <th scope="col">Sexo</th>
                   <th scope="col">Peso</th>
                   <th scope="col">Altura</th>
                   <th scope="col">IMC</th>
@@ -178,8 +180,23 @@ include 'navbar.php';
                 });
               </script>
               <br />
-              <label>Peso (kg)</label>
-              <input id="peso" type="number" class="form-control" name="peso" placeholder="Insira seu Peso" required />
+              <label for="peso">Peso (kg)</label>
+              <input id="peso" type="text" class="form-control" name="peso" step="0.01" placeholder="Insira seu Peso" required />
+              <script>
+                // Adicione a máscara ao campo de entrada
+                $(document).ready(function() {
+                  $('#peso').inputmask({
+                    alias: 'numeric',
+                    groupSeparator: '',
+                    autoGroup: true,
+                    digits: 2,
+                    digitsOptional: false,
+                    prefix: '',
+                    rightAlign: false
+                  });
+                });
+              </script>
+
               <br />
               <label>Altura (m)</label>
               <input id="altura" type="number" class="form-control" name="altura" step="0.01" placeholder="Insira a Altura" required />

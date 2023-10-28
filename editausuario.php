@@ -60,7 +60,7 @@ while ($dados = $query->fetch_array()) {
       </script>
       <br />
       <label>Peso (kg)</label>
-      <input id="peso" type="number" class="form-control" name="peso" step="0.01" value="<?php echo $peso; ?>" required />
+      <input id="peso" type="text" class="form-control" name="peso" step="0.01" value="<?php echo $peso; ?>" required />
       <br />
       <label>Altura</label>
       <input id="altura" type="number" class="form-control" name="altura" step="0.01" value="<?php echo $altura; ?>" required />
