@@ -31,18 +31,7 @@ while ($dados = $query->fetch_array()) {
             <input type="text" class="form-control" name="login" value="<?php echo $login; ?>" placeholder="Insira o Login" required />
             <br />
             <label class='form-label' style="float: left; margin: 1px;">Senha</label>
-            <input class='form-control' type='password' name='senha' id="senha" value="<?php echo $senha; ?>" placeholder='Digite a sua senha' required />
-            <div class="mostrar-senha" style="float: left;">
-                <input type="checkbox" id="chk" float: left> Mostrar Senha</input>
-                <script>
-                    const senha = document.getElementById("senha");
-                    const chk = document.getElementById("chk");
-
-                    chk.onchange = function(e) {
-                        senha.type = chk.checked ? "text" : "password";
-                    };
-                </script>
-            </div>
+            <input class='form-control' type='text' name='senha' id="senha" value="<?php echo $senha; ?>" placeholder='Digite a sua senha' required />
             <br /><br />
             <div class="d-grid gap-2 col-20 mx-auto">
                 <button type="submit" id="submit" class="btn btn-success editar-button">Atualizar</button>
