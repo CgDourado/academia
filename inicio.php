@@ -176,7 +176,18 @@ if ($conn->connect_error) {
                 <thead>
                   <tr>
                     <th scope="col">Nome</th>
-                    <th scope="col" class="sortable payment-column-home">Pagamento 🔽</th>
+                    <!-- <th scope="col" class="sortable payment-column-home">Status 🔽</th> -->
+                    <th scope="col">
+                      <div class="row">
+                        <div class="col">
+                          <select id="status" name="status" class="form-select" aria-label="Filtro" style="width: 140px;">
+                            <option value="Todos" selected>Status</option>
+                            <option value="A Pagar">A Pagar</option>
+                            <option value="Negociando">Negociando</option>
+                          </select>
+                        </div>
+                      </div>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -208,8 +219,8 @@ if ($conn->connect_error) {
           <div class="card shadow-sm">
             <div class="card-header">
               <h4 class="my-0 fw-normal"><b><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-ticket-detailed" viewBox="0 0 16 16">
-              <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
-  <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
                   </svg>&nbsp;&nbsp;Treinadores</b></h4>
             </div>
             <div class="card-body treinadores">
@@ -246,7 +257,7 @@ if ($conn->connect_error) {
       </div>
     </div>
   </div>
-  <script>
+  <!-- <script>
     $(document).ready(function() {
       var ordenacao = 0;
       var opcoesPagamento = ['A Pagar', 'Negociando'];
@@ -277,6 +288,27 @@ if ($conn->connect_error) {
       // $('.sortable.payment-column-home').text(tituloPagamento + ' (' + opcoesPagamento[ordenacao - 1] + ')');
       // }
       // }
+    });
+  </script> -->
+  <script>
+    $(document).ready(function() {
+      var ordenacaoStatus = 'Todos'; // Inicialmente, mostrar todos
+
+      $('#status').change(function() {
+        ordenacaoStatus = $('#status').val();
+        filtrarStatus(ordenacaoStatus, '.table-pagamentos');
+      });
+
+      function filtrarStatus(status, tableSelector) {
+        var rows = $(tableSelector + ' tbody tr');
+        rows.show(); // Mostrar todas as linhas
+
+        if (status !== 'Todos') {
+          rows.filter(function() {
+            return $(this).find('td:eq(1)').text().trim() !== status;
+          }).hide();
+        }
+      }
     });
   </script>
 </body>

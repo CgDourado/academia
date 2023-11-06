@@ -65,7 +65,18 @@ include 'navbar.php';
               <thead>
                 <tr>
                   <th scope="col">ID</th>
-                  <th scope="col" class="sortable1 name-column">Nome 🔽</th>
+                  <!-- <th scope="col" class="sortable1 name-column">Nome 🔽</th> -->
+                  <th scope="col">
+                    <div class="row">
+                      <div class="col text-center">
+                        <select id="snomes" name="snomes" class="form-select mx-auto" aria-label="Filtro" style="width: 100px;">
+                          <option value="id" selected>Nomes</option>
+                          <option value="az">A-Z</option>
+                          <option value="za">Z-A</option>
+                        </select>
+                      </div>
+                    </div>
+                  </th>
                   <th scope="col">E-mail</th>
                   <th scope="col">Telefone</th>
                   <th scope="col">CPF</th>
@@ -75,7 +86,19 @@ include 'navbar.php';
                   <th scope="col">Peso</th>
                   <th scope="col">Altura</th>
                   <th scope="col">IMC</th>
-                  <th scope="col" class="sortable payment-column">Pagamento 🔽</th>
+                  <!-- <th scope="col" class="sortable payment-column">Pagamento 🔽</th> -->
+                  <th scope="col">
+                    <div class="row">
+                      <div class="col text-center">
+                        <select id="spagamentos" name="spagamentos" class="form-select mx-auto" aria-label="Filtro" style="width: 140px;">
+                          <option value="Todos" selected>Pagamentos</option>
+                          <option value="Pago">Pago</option>
+                          <option value="A Pagar">A Pagar</option>
+                          <option value="Negociando">Negociando</option>
+                        </select>
+                      </div>
+                    </div>
+                  </th>
                   <th scope="col">Plano</th>
                   <th scope="col">Ações</th>
                 </tr>
@@ -314,6 +337,35 @@ include 'navbar.php';
     $(document).ready(function() {
       var ordenacao = 0;
 
+      $('#spagamentos').change(function() {
+        ordenacao = $('#spagamentos').val();
+        filtrarPagamento(ordenacao);
+      });
+
+      function filtrarPagamento(ordenacao) {
+        var rows = $('tbody tr');
+        rows.show(); // Mostrar todas as linhas
+
+        if (ordenacao === "Pago") {
+          rows.filter(function() {
+            return $(this).find('td:eq(11)').text().trim() !== 'Pago';
+          }).hide();
+        } else if (ordenacao === "A Pagar") {
+          rows.filter(function() {
+            return $(this).find('td:eq(11)').text().trim() !== 'A Pagar';
+          }).hide();
+        } else if (ordenacao === "Negociando") {
+          rows.filter(function() {
+            return $(this).find('td:eq(11)').text().trim() !== 'Negociando';
+          }).hide();
+        }
+      }
+    });
+  </script>
+  <!-- <script>
+    $(document).ready(function() {
+      var ordenacao = 0;
+
       $('.sortable').click(function() {
         ordenacao = (ordenacao + 1) % 5;
         filtrarPagamento(ordenacao);
@@ -370,7 +422,7 @@ include 'navbar.php';
         }
       }
     });
-  </script>
+  </script> -->
   <script>
     $(document).ready(function() {
       $("#search").on("keyup", function() {
@@ -381,7 +433,7 @@ include 'navbar.php';
       });
     });
   </script>
-  <script>
+  <!-- <script>
     $(document).ready(function() {
       var ordenacaoNome = 0; // 0: Ordenação original, 1: A-Z, 2: Z-A, 3: Ordenar por ID
       var tituloNome = 'Nome 🔽';
@@ -441,6 +493,52 @@ include 'navbar.php';
         // Para ordenação por ID, mantenha o título original
         var titulo = ordenacaoNome === 3 ? tituloNome : tituloNome + ' (' + textoOrdenacao + ')';
         $('.sortable1.name-column').text(titulo);
+      }
+    });
+  </script> -->
+  <script>
+    $(document).ready(function() {
+      // Função para formatar o nome com a primeira letra de cada palavra maiúscula
+      function formatarNome() {
+        var nome = $("#nome").val();
+        nome = nome.toLowerCase().replace(/(^|\s)\S/g, function(l) {
+          return l.toUpperCase();
+        });
+        $("#nome").val(nome);
+      }
+
+      // Aplica a formatação quando o campo Nome perde o foco
+      $("#nome").blur(function() {
+        formatarNome();
+      });
+
+      // Adicione esta parte para aplicar a ordenação
+      $("#snomes").change(function() {
+        var ordenacao = $("#snomes").val();
+        ordenarTabela(ordenacao);
+      });
+
+      function ordenarTabela(ordenacao) {
+        var rows = $("tbody tr").get();
+        rows.sort(function(a, b) {
+          if (ordenacao === "id") {
+            var keyA = parseInt($(a).find("td:eq(0)").text());
+            var keyB = parseInt($(b).find("td:eq(0)").text());
+            return keyA - keyB;
+          } else if (ordenacao === "az") {
+            var keyA = $(a).find("td:eq(1)").text();
+            var keyB = $(b).find("td:eq(1)").text();
+            return keyA.localeCompare(keyB);
+          } else if (ordenacao === "za") {
+            var keyA = $(a).find("td:eq(1)").text();
+            var keyB = $(b).find("td:eq(1)").text();
+            return keyB.localeCompare(keyA);
+          }
+        });
+
+        $.each(rows, function(index, row) {
+          $("tbody").append(row);
+        });
       }
     });
   </script>

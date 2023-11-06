@@ -64,7 +64,18 @@ include 'navbar.php';
               <thead>
                 <tr>
                   <th scope="col">ID</th>
-                  <th scope="col" class="sortable1 name-column">Nome 🔽</th>
+                  <!-- <th scope="col" class="sortable1 name-column">Nome 🔽</th> -->
+                  <th scope="col">
+                    <div class="row">
+                      <div class="col text-center">
+                        <select id="snomes2" name="snomes2" class="form-select mx-auto" aria-label="Filtro" style="width: 100px;">
+                          <option value="id" selected>Nomes</option>
+                          <option value="az">A-Z</option>
+                          <option value="za">Z-A</option>
+                        </select>
+                      </div>
+                    </div>
+                  </th>
                   <th scope="col">Login</th>
                   <th scope="col">Senha</th>
                   <th scope="col">Ações</th>
@@ -177,41 +188,46 @@ include 'navbar.php';
   </script>
   <script>
     $(document).ready(function() {
-      var ordenacao = 0; // 0: Ordenação original, 1: A-Z, 2: Z-A
+      // Função para formatar o nome com a primeira letra de cada palavra maiúscula
+      function formatarNome() {
+        var nome = $("#nome").val();
+        nome = nome.toLowerCase().replace(/(^|\s)\S/g, function(l) {
+          return l.toUpperCase();
+        });
+        $("#nome").val(nome);
+      }
 
-      $('.sortable1').click(function() {
-        ordenacao = (ordenacao + 1) % 4;
+      // Aplica a formatação quando o campo Nome perde o foco
+      $("#nome").blur(function() {
+        formatarNome();
+      });
+
+      // Adicione esta parte para aplicar a ordenação
+      $("#snomes2").change(function() {
+        var ordenacao = $("#snomes2").val();
         ordenarTabela(ordenacao);
       });
 
       function ordenarTabela(ordenacao) {
-        var rows = $('#clienteTable tbody tr').get();
-
-        if (ordenacao === 1) {
-          // Ordenar por Nome A-Z
-          rows.sort(function(a, b) {
-            var nomeA = $(a).find('td:eq(1)').text().toUpperCase();
-            var nomeB = $(b).find('td:eq(1)').text().toUpperCase();
-            return nomeA.localeCompare(nomeB);
-          });
-        } else if (ordenacao === 2) {
-          // Ordenar por Nome Z-A
-          rows.sort(function(a, b) {
-            var nomeA = $(a).find('td:eq(1)').text().toUpperCase();
-            var nomeB = $(b).find('td:eq(1)').text().toUpperCase();
-            return nomeB.localeCompare(nomeA);
-          });
-        } else if (ordenacao === 3) {
-          // Ordenar por ID
-          rows.sort(function(a, b) {
-            var idA = parseInt($(a).find('td:eq(0)').text());
-            var idB = parseInt($(b).find('td:eq(0)').text());
-            return idA - idB;
-          });
-        }
+        var rows = $("tbody tr").get();
+        rows.sort(function(a, b) {
+          if (ordenacao === "id") {
+            var keyA = parseInt($(a).find("td:eq(0)").text());
+            var keyB = parseInt($(b).find("td:eq(0)").text());
+            return keyA - keyB;
+          } else if (ordenacao === "az") {
+            var keyA = $(a).find("td:eq(1)").text();
+            var keyB = $(b).find("td:eq(1)").text();
+            return keyA.localeCompare(keyB);
+          } else if (ordenacao === "za") {
+            var keyA = $(a).find("td:eq(1)").text();
+            var keyB = $(b).find("td:eq(1)").text();
+            return keyB.localeCompare(keyA);
+          }
+        });
 
         $.each(rows, function(index, row) {
-          $('#clienteTable tbody').append(row);
+          $("tbody").append(row);
         });
       }
     });
