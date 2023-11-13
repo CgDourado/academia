@@ -52,9 +52,17 @@ include 'navbar.php';
                   <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
                   <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z" />
                 </svg>&nbsp;&nbsp;Clientes</b></h4><br />
-            <div class="d-grid gap-2 col-2 mx-auto">
-              <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">Novo Cliente</button>
-            </div>
+            <?php
+            $cargo = 'dono';
+            if (isset($_SESSION["cargo"])) {
+              $cargo = $_SESSION["cargo"];
+            }
+            if ($cargo === 'dono') {
+              echo '<div class="d-grid gap-2 col-2 mx-auto">
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">Novo Cliente</button>
+              </div>';
+            }
+            ?>
             <form class="d-flex justify-content-start align-items-center" role="search">
               <img src="css/lupa.png" alt="Ícone de Pesquisa" style="width: 20px; height: 20px; margin-right: 10px; " />
               <input class="form-control me-2" type="search" id="search" placeholder="Digite sua pesquisa..." style="width: 250px;" aria-label="Search">
@@ -100,13 +108,23 @@ include 'navbar.php';
                     </div>
                   </th>
                   <th scope="col">Plano</th>
+                  <th scope="col">Treinador</th>
                   <th scope="col">Ações</th>
                 </tr>
               </thead>
               <tbody>
                 <?php
                 include 'conecta.php';
-                $pesquisa = mysqli_query($conn, "SELECT * FROM usuario");
+                if (isset($_SESSION["cargo"])) {
+                  $cargo = $_SESSION["cargo"];
+                  if ($cargo === 'dono') {
+                    $nome_treinador = $_SESSION["user"];
+                    $pesquisa = mysqli_query($conn, "SELECT * FROM usuario");
+                  } elseif ($cargo === 'treinador') {
+                    $nome_treinador = $_SESSION["user"];
+                    $pesquisa = mysqli_query($conn, "SELECT * FROM usuario WHERE treinador='$nome_treinador'");
+                  }
+                }
                 $row = mysqli_num_rows($pesquisa);
                 if ($row > 0) {
                   while ($registro = $pesquisa->fetch_array()) {
@@ -127,8 +145,16 @@ include 'navbar.php';
                     echo '<td>' . $registro['imc'] . '</td>';
                     echo '<td>' . $registro['pagamento'] . '</td>';
                     echo '<td>' . $registro['plano'] . '</td>';
+                    echo '<td>' . $registro['treinador'] . '</td>';
 
-                    echo '<td><a href="editausuario.php?id=' . $id . '" data-bs-toggle="modal" data-id="' . $id . '" data-bs-target="#exampleModal1' . $id . '" style="text-decoration: none;" data-bs-toggle="tooltip" title="Editar">✏️</a> | <a href="excluirusuario.php?id=' . $id . '" style="text-decoration: none;" data-bs-toggle="tooltip" title="Excluir">🗑️</a></td>';
+                    echo '<td><a href="editausuario.php?id=' . $id . '" data-bs-toggle="modal" data-id="' . $id . '" data-bs-target="#exampleModal1' . $id . '" style="text-decoration: none;" data-bs-toggle="tooltip" title="Editar">✏️</a>';
+                    $cargo = 'dono';
+                    if (isset($_SESSION["cargo"])) {
+                      $cargo = $_SESSION["cargo"];
+                    }
+                    if ($cargo === 'dono') {
+                      echo ' | <a href="excluirusuario.php?id=' . $id . '" style="text-decoration: none;" data-bs-toggle="tooltip" title="Excluir">🗑️</a></td>';
+                    }
                     echo '</tr>';
                     echo '<div class="modal fade" id="exampleModal1' . $id . '" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">';
                     echo '<div class="modal-dialog modal-dialog-centered">';
@@ -260,6 +286,44 @@ include 'navbar.php';
                 </div>
               </div>
               <br />
+              <?php
+              if (isset($_SESSION["cargo"])) {
+                $cargo = $_SESSION["cargo"];
+                if ($cargo === 'dono') {
+                  include 'conecta.php';
+
+                  if ($conn->connect_error) {
+                    die("Falha na conexão com o banco de dados: " . $conn->connect_error);
+                  }
+                  $sql = "SELECT nome FROM treinadores";
+                  $result = $conn->query($sql);
+                  if ($result->num_rows > 0) {
+                    echo '<div class="row">
+                    <div class="col">
+                      <label for="treinador">Treinador:</label>
+                      <select id="treinador" name="treinador" class="form-select" aria-label="Default select example" required>
+                        <option value="" selected disabled>...</option>';
+                    while ($row = $result->fetch_assoc()) {
+                      echo '<option value="' . $row['nome'] . '">' . $row['nome'] . '</option>';
+                    }
+                    echo '</select>
+                    </div>
+                  </div>';
+                  } else {
+                    echo '<div class="row">
+                    <div class="col">
+                      <label for="treinador">Treinador:</label>
+                      <select id="treinador" name="treinador" class="form-select" aria-label="Default select example" required>
+                        <option value="" selected disabled>Nenhum treinador encontrado!</option>
+                      </select>
+                    </div>
+                  </div>';
+                  }
+                  $conn->close();
+                }
+              }
+              ?>
+              <br />
               <div class="d-grid gap-2 col-20 mx-auto">
                 <button type="submit" id="submit" class="btn btn-success cadastrar-button">Cadastrar</button>
               </div>
@@ -289,17 +353,18 @@ include 'navbar.php';
           </script>
           <script>
             $(document).ready(function() {
-              // Initialize the form submission event handler
+              // Validação de CPF
+              // Inicialize o manipulador de eventos de envio de formulário
               $("#registrationForm").submit(function(event) {
-                // Get the value of the CPF input field within the current modal
+                // Obtenha o valor do campo de entrada CPF dentro do modal atual
                 let cpf_value = $(this).find(".cpf-field").val();
 
                 // Perform CPF validation
                 if (jsbrasil.validateBr.cpf(cpf_value)) {
-                  // CPF is valid, continue with form submission
+                  // CPF é válido, continue com o envio do formulário
                   $(this).find(".cpf-field").css("background-color", "initial");
                 } else {
-                  // CPF is invalid, prevent form submission and highlight the field
+                  // CPF é inválido, impede o envio do formulário e destaca o campo
                   event.preventDefault();
                   $(this).find(".cpf-field").css("background-color", "#facdcd");
                   alert("CPF inválido. Por favor, insira um CPF válido.");
@@ -334,6 +399,7 @@ include 'navbar.php';
     </div>
   </div>
   <script>
+    // Organiza a tabela de acordo com o que for selecionado na caixa de filtro de pagamentos
     $(document).ready(function() {
       var ordenacao = 0;
 
@@ -424,6 +490,7 @@ include 'navbar.php';
     });
   </script> -->
   <script>
+    // Barra de pesquisa
     $(document).ready(function() {
       $("#search").on("keyup", function() {
         var searchTerm = $(this).val().toLowerCase();
@@ -498,21 +565,22 @@ include 'navbar.php';
   </script> -->
   <script>
     $(document).ready(function() {
-      // Função para formatar o nome com a primeira letra de cada palavra maiúscula
-      function formatarNome() {
-        var nome = $("#nome").val();
-        nome = nome.toLowerCase().replace(/(^|\s)\S/g, function(l) {
-          return l.toUpperCase();
-        });
-        $("#nome").val(nome);
-      }
+      // // Função para formatar o nome com a primeira letra de cada palavra maiúscula
+      // function formatarNome() {
+      //   var nome = $("#nome").val();
+      //   nome = nome.toLowerCase().replace(/(^|\s)\S/g, function(l) {
+      //     return l.toUpperCase();
+      //   });
+      //   $("#nome").val(nome);
+      // }
 
-      // Aplica a formatação quando o campo Nome perde o foco
-      $("#nome").blur(function() {
-        formatarNome();
-      });
+      // // Aplica a formatação quando o campo Nome perde o foco
+      // $("#nome").blur(function() {
+      //   formatarNome();
+      // });
 
-      // Adicione esta parte para aplicar a ordenação
+      // Organiza a tabela de acordo com o que for selecionado na caixa de filtro de Nome
+      // Sendo: Nome, A-Z, Z-A
       $("#snomes").change(function() {
         var ordenacao = $("#snomes").val();
         ordenarTabela(ordenacao);
@@ -546,5 +614,4 @@ include 'navbar.php';
 
 </html>
 
-
-AQUI TA BOM
+------

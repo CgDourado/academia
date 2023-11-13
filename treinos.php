@@ -74,7 +74,16 @@ include 'navbar.php';
               <tbody>
                 <?php
                 include 'conecta.php';
-                $pesquisa = mysqli_query($conn, "SELECT * FROM treinos");
+                if (isset($_SESSION["cargo"])) {
+                  $cargo = $_SESSION["cargo"];
+                  if ($cargo === 'dono') {
+                    $nome_treinador = $_SESSION["user"];
+                    $pesquisa = mysqli_query($conn, "SELECT * FROM usuario");
+                  } elseif ($cargo === 'treinador') {
+                    $nome_treinador = $_SESSION["user"];
+                    $pesquisa = mysqli_query($conn, "SELECT * FROM usuario WHERE treinador='$nome_treinador'");
+                  }
+                }
                 $row = mysqli_num_rows($pesquisa);
                 if ($row > 0) {
                   while ($registro = $pesquisa->fetch_array()) {
@@ -111,7 +120,7 @@ include 'navbar.php';
                     echo '</div>';
                     echo '</div>';
 
-                    //parte da visualização do treino 
+                    //Parte da visualização do treino 
                     echo '</tr>';
                     echo '<div class="modal fade" id="exampleModalT' . $id . '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">';
                     echo '<div class="modal-dialog modal-dialog-centered">';
@@ -180,6 +189,7 @@ include 'navbar.php';
     </div>
   </div>
   <script>
+    // Barra de pesquisa
     $(document).ready(function() {
       $("#searcht").on("keyup", function() {
         var searchTerm = $(this).val().toLowerCase();
@@ -205,7 +215,8 @@ include 'navbar.php';
         formatarNome();
       });
 
-      // Adicione esta parte para aplicar a ordenação
+      // Organiza a tabela de acordo com o que for selecionado na caixa de filtro de Nome
+      // Sendo: Nome, A-Z, Z-A
       $("#snomes1").change(function() {
         var ordenacao = $("#snomes1").val();
         ordenarTabela(ordenacao);

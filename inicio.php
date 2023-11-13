@@ -34,6 +34,7 @@ if ($conn->connect_error) {
 
     .table-container {
       max-height: 304px;
+      height: 304px;
       /* Defina a altura máxima desejada */
       overflow-y: auto;
     }
@@ -41,6 +42,20 @@ if ($conn->connect_error) {
     .payment-column-home:hover {
       cursor: pointer;
       text-decoration: underline;
+    }
+
+    .treinadores {
+      max-height: 304px;
+      height: 304px;
+      /* Defina a altura máxima desejada */
+      overflow-y: auto;
+    }
+
+    .clientes {
+      max-height: 304px;
+      height: 304px;
+      /* Defina a altura máxima desejada */
+      overflow-y: auto;
     }
   </style>
 </head>
@@ -76,9 +91,24 @@ if ($conn->connect_error) {
                   </svg>&nbsp;&nbsp;Clientes</b></h4>
             </div>
             <div class="card-body clientes">
-              <?php
-              $sql = "SELECT sexo, COUNT(*) AS quantidade FROM usuario GROUP BY sexo";
-              $result = $conn->query($sql);
+            <?php
+                include 'conecta.php';
+
+                if ($conn->connect_error) {
+                  die("Erro de conexão com o banco de dados: " . $conn->connect_error);
+                }
+
+                if (isset($_SESSION["cargo"])) {
+                  $cargo = $_SESSION["cargo"];
+
+                  if ($cargo === 'dono') {
+                    $sql = "SELECT sexo, COUNT(*) AS quantidade FROM usuario GROUP BY sexo";
+                  } elseif ($cargo === 'treinador') {
+                    $nome_treinador = $_SESSION['user'];
+                    $sql = "SELECT sexo, COUNT(*) AS quantidade FROM usuario WHERE treinador = '$nome_treinador' GROUP BY sexo;";
+                  }
+                  $result = $conn->query($sql);
+                }
 
               if ($result->num_rows > 0) {
                 $homens = 0;
@@ -120,9 +150,17 @@ if ($conn->connect_error) {
                   die("Erro de conexão com o banco de dados: " . $conn->connect_error);
                 }
 
-                // Consulta para obter as contagens masculinas e femininas
-                $sql = "SELECT sexo, COUNT(*) AS quantidade FROM usuario GROUP BY sexo";
-                $result = $conn->query($sql);
+                if (isset($_SESSION["cargo"])) {
+                  $cargo = $_SESSION["cargo"];
+
+                  if ($cargo === 'dono') {
+                    $sql = "SELECT sexo, COUNT(*) AS quantidade FROM usuario GROUP BY sexo";
+                  } elseif ($cargo === 'treinador') {
+                    $nome_treinador = $_SESSION['user'];
+                    $sql = "SELECT sexo, COUNT(*) AS quantidade FROM usuario WHERE treinador = '$nome_treinador' GROUP BY sexo;";
+                  }
+                  $result = $conn->query($sql);
+                }
                 ?>
 
                 <div id="chart_div" style="width: 100%; height: 100%;"></div>
@@ -193,7 +231,16 @@ if ($conn->connect_error) {
                 <tbody>
                   <?php
                   include 'conecta.php';
-                  $pesquisa = mysqli_query($conn, "SELECT * FROM usuario");
+                  if (isset($_SESSION["cargo"])) {
+                    $cargo = $_SESSION["cargo"];
+                    if ($cargo === 'dono') {
+                      $nome_treinador = $_SESSION["user"];
+                      $pesquisa = mysqli_query($conn, "SELECT * FROM usuario");
+                    } elseif ($cargo === 'treinador') {
+                      $nome_treinador = $_SESSION["user"];
+                      $pesquisa = mysqli_query($conn, "SELECT * FROM usuario WHERE treinador='$nome_treinador'");
+                    }
+                  }
                   $row = mysqli_num_rows($pesquisa);
                   if ($row > 0) {
                     while ($registro = $pesquisa->fetch_array()) {
@@ -225,11 +272,6 @@ if ($conn->connect_error) {
             </div>
             <div class="card-body treinadores">
               <table class="table table-striped table-treinadores">
-                <thead>
-                  <tr>
-                    <th scope="col">Nome</th>
-                  </tr>
-                </thead>
                 <tbody>
                   <?php
                   include 'conecta.php';
@@ -291,6 +333,7 @@ if ($conn->connect_error) {
     });
   </script> -->
   <script>
+    // Filtra a tabela de pagamento de acordo com o que for selecionado
     $(document).ready(function() {
       var ordenacaoStatus = 'Todos'; // Inicialmente, mostrar todos
 

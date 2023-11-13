@@ -16,6 +16,7 @@ while ($dados = $query->fetch_array()) {
   $pagamento = $dados['pagamento'];
   $plano = $dados['plano'];
   $sexo = $dados['sexo'];
+  $treinador = $dados['treinador'];
 }
 ?>
 
@@ -97,6 +98,66 @@ while ($dados = $query->fetch_array()) {
         </div>
       </div>
       <br>
+      <?php
+      if (isset($_SESSION["cargo"])) {
+        $cargo = $_SESSION["cargo"];
+        include 'conecta.php';
+
+        if ($conn->connect_error) {
+          die("Falha na conexão com o banco de dados: " . $conn->connect_error);
+        }
+
+        $sql = "SELECT nome FROM treinadores";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+          echo '<div class="row">
+            <div class="col">
+                <label for="treinador">Treinador:</label>
+                <select id="treinador" name="treinador" class="form-select" aria-label="Default select example" required>
+                    <option value="" selected disabled>...</option>';
+
+          while ($row = $result->fetch_assoc()) {
+            $selected = ($treinador === $row['nome']) ? 'selected' : '';
+            echo '<option value="' . $row['nome'] . '" ' . $selected . '>' . $row['nome'] . '</option>';
+          }
+
+          echo '</select>
+            </div>
+        </div>';
+        } else {
+          echo '<div class="row">
+            <div class="col">
+                <label for="treinador">Treinador:</label>
+                <select id="treinador" name="treinador" class="form-select" aria-label="Default select example" required>
+                    <option value="" selected disabled>Nenhum treinador encontrado!</option>
+                </select>
+            </div>
+        </div>';
+        }
+
+        $conn->close();
+      }
+      ?>
+      <style>
+        .disabled-select {
+          pointer-events: none;
+          background-color: #f2f2f2;
+          /* Cor de fundo cinza */
+          opacity: 0.5;
+          /* Opacidade reduzida */
+        }
+      </style>
+      <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          var cargo = "<?php echo $cargo; ?>";
+          if (cargo === 'treinador') {
+            var selectElement = document.getElementById('treinador');
+            selectElement.classList.add('disabled-select');
+          }
+        });
+      </script>
+      <br />
       <div class="d-grid gap-2 col-20 mx-auto">
         <button type="submit" id="submit" class="btn btn-success editar-button">Atualizar</button>
       </div>
@@ -104,17 +165,17 @@ while ($dados = $query->fetch_array()) {
   </form>
   <script>
     $(document).ready(function() {
-      // Initialize the form submission event handler
+      // Inicialize o manipulador de eventos de envio de formulário
       $("#editaForm").submit(function(event) {
-        // Get the value of the CPF input field within the current modal
+        // Obtenha o valor do campo de entrada CPF dentro do modal atual
         let cpf_value = $(this).find(".cpf-field").val();
 
-        // Perform CPF validation
+        // Realiza a validação de CPF
         if (jsbrasil.validateBr.cpf(cpf_value)) {
-          // CPF is valid, continue with form submission
+          // CPF é válido, continue com o envio do formulário
           $(this).find(".cpf-field").css("background-color", "initial");
         } else {
-          // CPF is invalid, prevent form submission and highlight the field
+          // CPF é inválido, impede o envio do formulário e destaca o campo
           event.preventDefault();
           $(this).find(".cpf-field").css("background-color", "#facdcd");
           alert("CPF inválido. Por favor, insira um CPF válido.");

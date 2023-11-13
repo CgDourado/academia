@@ -137,7 +137,7 @@ include 'navbar.php';
           <form id="registrationForm" action="cadtreinador.php" method="POST">
             <div class="form-group">
               <label>Nome</label>
-              <input type="text" class="form-control" name="nome" id="nome" placeholder="Insira o nome completo" required />
+              <input type="text" class="form-control" name="nome" id="nomet" placeholder="Insira o nome completo" required />
               <br />
               <label>Login</label>
               <input type="text" class="form-control" name="login" placeholder="Insira o Login" required />
@@ -154,17 +154,17 @@ include 'navbar.php';
             $(document).ready(function() {
               // Função para formatar o nome com a primeira letra de cada palavra maiúscula
               function formatarNome() {
-                var nome = $("#nome").val();
+                var nome = $("#nomet").val();
 
                 nome = nome.toLowerCase().replace(/(^|\s)\S/g, function(l) {
                   return l.toUpperCase();
                 });
 
-                $("#nome").val(nome);
+                $("#nomet").val(nome);
               }
 
               // Aplica a formatação quando o campo Nome perde o foco
-              $("#nome").blur(function() {
+              $("#nomet").blur(function() {
                 formatarNome();
               });
             });

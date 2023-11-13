@@ -3,6 +3,7 @@
     $nome = $_POST['nome'];
     $login = $_POST['login'];
     $senha = $_POST['senha'];
+    $cargo = 'treinador';
     $query = $conn->query("SELECT * FROM treinadores WHERE nome='$nome' AND login='$login' AND senha='$senha'");
     if(mysqli_num_rows($query) > 0){
         echo "<script language='javascript' type='text/javascript'>
@@ -11,7 +12,7 @@
         </script>";
         exit();
     } else {
-        $sql = "INSERT INTO treinadores(nome, login, senha) VALUES ('$nome','$login','$senha')";
+        $sql = "INSERT INTO treinadores(nome, login, senha, cargo) VALUES ('$nome','$login','$senha','$cargo')";
         if (mysqli_query($conn, $sql)) {
             mysqli_commit($conn);
             echo "<script language='javascript' type='text/javascript'>
