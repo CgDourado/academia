@@ -244,7 +244,6 @@ include 'navbar.php';
                   });
                 });
               </script>
-
               <br />
               <label>Altura (m)</label>
               <input id="altura" type="number" class="form-control" name="altura" step="0.01" placeholder="Insira a Altura" required />

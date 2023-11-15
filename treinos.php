@@ -131,14 +131,11 @@ include 'navbar.php';
                     echo '</div>';
                     echo '<div class="modal-body">';
                     include 'vertreino.php';
-                    echo '<div class="modal-footer">';
-                    echo '<div style="display: flex; align-items: center;">
-                      <a href="........?id=' . $id . '" style="text-decoration: none; display: flex; align-items: center; margin-right: 10px;" data-bs-toggle="tooltip" title="Compartilhar">
-                        <span style="font-size: 24px; cursor: pointer;">📩</span>
-                      </a><a href="excluirtreino.php?id=' . $id . '" style="text-decoration: none; display: flex; align-items: center;" data-bs-toggle="tooltip" title="Excluir">
-                        <span style="font-size: 24px; cursor: pointer;">🗑️</span>
-                      </a>
-                    </div>';
+                    // echo '<div class="modal-footer">';
+                    // echo '</a><a href="excluirtreino.php?id=' . $id . '" style="text-decoration: none; display: flex; align-items: center;" data-bs-toggle="tooltip" title="Excluir">
+                    //     <span style="font-size: 24px; cursor: pointer;">🗑️</span>
+                    //   </a>
+                    // </div>';
                     echo '</div>';
                     echo '</div>';
                     echo '</div>';
