@@ -71,13 +71,6 @@ if ($conn->connect_error) {
     <div class="row justify-content-center row-cols-1 row-cols-md-3 mb-3 text-center">
       <div class="col" style="max-width: 1000px;">
         <div class="card mb-4 rounded-3 shadow-sm: 0" style="border: none;">
-          <!-- <div style="font-size: 50px; margin-top: 12vh; font-weight: 700; margin-bottom: 24px; text-align: center; line-height: 1.1; max-width: 1200px;">
-            //<?php
-              //$usuario = $_SESSION["user"];
-              //echo "<font color='black'>Olá, " . $usuario . ".</font>";
-              //
-              ?>
-          </div> -->
         </div>
       </div>
     </div>
@@ -214,7 +207,6 @@ if ($conn->connect_error) {
                 <thead>
                   <tr>
                     <th scope="col">Nome</th>
-                    <!-- <th scope="col" class="sortable payment-column-home">Status 🔽</th> -->
                     <th scope="col">
                       <div class="row">
                         <div class="col">
@@ -299,39 +291,6 @@ if ($conn->connect_error) {
       </div>
     </div>
   </div>
-  <!-- <script>
-    $(document).ready(function() {
-      var ordenacao = 0;
-      var opcoesPagamento = ['A Pagar', 'Negociando'];
-
-      $('.sortable.payment-column-home').click(function() {
-        ordenacao = (ordenacao + 1) % (opcoesPagamento.length + 1);
-
-        // Filtrar somente a tabela de "Pagamentos"
-        filtrarPagamento(ordenacao, '.table-pagamentos');
-      });
-
-      function filtrarPagamento(ordenacao, tableSelector) {
-        var rows = $(tableSelector + ' tbody tr');
-        rows.show(); // Mostrar todas as linhas
-
-        if (ordenacao > 0 && ordenacao <= opcoesPagamento.length) {
-          var filtro = opcoesPagamento[ordenacao - 1];
-          rows.filter(function() {
-            return $(this).find('td:eq(1)').text().trim() !== filtro;
-          }).hide();
-        }
-      }
-
-      // function atualizarTextoCabecalho(ordenacao) {
-      // if (ordenacao === 0) {
-      // $('.sortable.payment-column-home').text(tituloPagamento);
-      // } else {
-      // $('.sortable.payment-column-home').text(tituloPagamento + ' (' + opcoesPagamento[ordenacao - 1] + ')');
-      // }
-      // }
-    });
-  </script> -->
   <script>
     // Filtra a tabela de pagamento de acordo com o que for selecionado
     $(document).ready(function() {

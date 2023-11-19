@@ -80,8 +80,6 @@ include 'cabecalho.php';
               </div>
               <br /><br />
               <button type="submit" aria-disabled="false" role="button" tabindex="0" style="user-select: none; border: none; transition: background 20ms ease-in 0s; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; height: 36px; border-radius: 4px; color: rgb(111, 191, 132); font-size: 14px; line-height: 1; padding-left: 12px; padding-right: 12px; font-weight: 500; background: rgb(217, 255, 227); box-shadow: rgba(15, 15, 15, 0.1) 0px 1px 2px, rgba(111, 191, 132, 0.3) 0px 0px 0px 1px inset; margin-top: 6px; margin-bottom: 12px; width: 100%;">Criar Conta</button>
-              <!-- <hr>
-              <h6>Tem uma conta? &nbsp&nbsp<button type="button" class="btn btn-secondary btn-sm" onclick="window.location.href='conta.php'">Fazer Login</button></h6> -->
             </form>
           </div>
         </div>

@@ -1,11 +1,11 @@
 <?php
-include 'conecta.php';
-$id = $id;
-$sql = "SELECT * FROM treinos WHERE id=$id";
-$query = $conn->query($sql);
-while ($dados = $query->fetch_array()) {
-  $treino = $dados['treino'];
-}
+  include 'conecta.php';
+  $id = $id;
+  $sql = "SELECT * FROM treinos WHERE id=$id";
+  $query = $conn->query($sql);
+  while ($dados = $query->fetch_array()) {
+    $treino = $dados['treino'];
+  }
 ?>
 
 <!DOCTYPE html>

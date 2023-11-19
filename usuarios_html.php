@@ -73,7 +73,6 @@ include 'navbar.php';
               <thead>
                 <tr>
                   <th scope="col">ID</th>
-                  <!-- <th scope="col" class="sortable1 name-column">Nome 🔽</th> -->
                   <th scope="col">
                     <div class="row">
                       <div class="col text-center">
@@ -94,7 +93,6 @@ include 'navbar.php';
                   <th scope="col">Peso</th>
                   <th scope="col">Altura</th>
                   <th scope="col">IMC</th>
-                  <!-- <th scope="col" class="sortable payment-column">Pagamento 🔽</th> -->
                   <th scope="col">
                     <div class="row">
                       <div class="col text-center">
@@ -153,7 +151,7 @@ include 'navbar.php';
                       $cargo = $_SESSION["cargo"];
                     }
                     if ($cargo === 'dono') {
-                      echo ' | <a href="excluirusuario.php?id=' . $id . '" style="text-decoration: none;" data-bs-toggle="tooltip" title="Excluir">🗑️</a></td>';
+                      echo ' | <a href="excluirusuario.php?id=' . $id . '" style="text-decoration: none;" data-bs-toggle="tooltip" onclick="return confirm(\'Tem certeza que deseja excluir?\')" ctitle="Excluir">🗑️</a></td>';
                     }
                     echo '</tr>';
                     echo '<div class="modal fade" id="exampleModal1' . $id . '" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">';
@@ -427,67 +425,6 @@ include 'navbar.php';
       }
     });
   </script>
-  <!-- <script>
-    $(document).ready(function() {
-      var ordenacao = 0;
-
-      $('.sortable').click(function() {
-        ordenacao = (ordenacao + 1) % 5;
-        filtrarPagamento(ordenacao);
-      });
-
-      function filtrarPagamento(ordenacao) {
-        var rows = $('tbody tr');
-        rows.show(); // Mostrar todas as linhas
-
-        if (ordenacao === 1) {
-          rows.filter(function() {
-            return $(this).find('td:eq(11)').text().trim() !== 'Pago';
-          }).hide();
-        } else if (ordenacao === 2) {
-          rows.filter(function() {
-            return $(this).find('td:eq(11)').text().trim() !== 'A Pagar';
-          }).hide();
-        } else if (ordenacao === 3) {
-          rows.filter(function() {
-            return $(this).find('td:eq(11)').text().trim() !== 'Negociando';
-          }).hide();
-        }
-      }
-    });
-    $(document).ready(function() {
-      var ordenacao = 0;
-      var opcoesPagamento = ['Pago', 'A Pagar', 'Negociando'];
-      var tituloPagamento = 'Pagamento 🔽';
-
-      $('.sortable.payment-column').click(function() {
-        ordenacao = (ordenacao + 1) % (opcoesPagamento.length + 1); // Adiciona 2 para incluir a opção de "voltar ao normal" e a opção de ocultar tudo
-        filtrarPagamento(ordenacao);
-        atualizarTextoCabecalho(ordenacao);
-      });
-
-      function filtrarPagamento(ordenacao) {
-        var rows = $('tbody tr');
-        rows.show(); // Mostrar todas as linhas
-
-        if (ordenacao > 0 && ordenacao <= opcoesPagamento.length) {
-          rows.filter(function() {
-            return $(this).find('td:eq(11)').text().trim() !== opcoesPagamento[ordenacao - 1];
-          }).hide();
-        } else if (ordenacao === opcoesPagamento.length + 1) {
-          rows.hide(); // Ocultar tudo
-        }
-      }
-
-      function atualizarTextoCabecalho(ordenacao) {
-        if (ordenacao === 0) {
-          $('.sortable.payment-column').text(tituloPagamento);
-        } else {
-          $('.sortable.payment-column').text(tituloPagamento + ' (' + opcoesPagamento[ordenacao - 1] + ')');
-        }
-      }
-    });
-  </script> -->
   <script>
     // Barra de pesquisa
     $(document).ready(function() {
@@ -499,87 +436,8 @@ include 'navbar.php';
       });
     });
   </script>
-  <!-- <script>
-    $(document).ready(function() {
-      var ordenacaoNome = 0; // 0: Ordenação original, 1: A-Z, 2: Z-A, 3: Ordenar por ID
-      var tituloNome = 'Nome 🔽';
-
-      $('.sortable1.name-column').click(function() {
-        if (ordenacaoNome === 0) {
-          ordenacaoNome = 1;
-        } else if (ordenacaoNome === 1) {
-          ordenacaoNome = 2;
-        } else if (ordenacaoNome === 2) {
-          ordenacaoNome = 3;
-        } else {
-          ordenacaoNome = 1;
-        }
-        ordenarTabelaPorNome(ordenacaoNome);
-        atualizarTextoCabecalho(ordenacaoNome);
-      });
-
-      function ordenarTabelaPorNome(ordenacaoNome) {
-        var rows = $('#clienteTable tbody tr').get();
-
-        if (ordenacaoNome === 1) {
-          // Ordenar por Nome A-Z
-          rows.sort(function(a, b) {
-            var nomeA = $(a).find('td:eq(1)').text().toUpperCase();
-            var nomeB = $(b).find('td:eq(1)').text().toUpperCase();
-            return nomeA.localeCompare(nomeB);
-          });
-        } else if (ordenacaoNome === 2) {
-          // Ordenar por Nome Z-A
-          rows.sort(function(a, b) {
-            var nomeA = $(a).find('td:eq(1)').text().toUpperCase();
-            var nomeB = $(b).find('td:eq(1)').text().toUpperCase();
-            return nomeB.localeCompare(nomeA);
-          });
-        } else if (ordenacaoNome === 3) {
-          // Ordenar por ID
-          rows.sort(function(a, b) {
-            var idA = parseInt($(a).find('td:eq(0)').text());
-            var idB = parseInt($(b).find('td:eq(0)').text());
-            return idA - idB;
-          });
-        }
-
-        $.each(rows, function(index, row) {
-          $('#clienteTable tbody').append(row);
-        });
-      }
-
-      function atualizarTextoCabecalho(ordenacaoNome) {
-        var textoOrdenacao = '';
-        if (ordenacaoNome === 1) {
-          textoOrdenacao = 'A-Z';
-        } else if (ordenacaoNome === 2) {
-          textoOrdenacao = 'Z-A';
-        }
-        // Para ordenação por ID, mantenha o título original
-        var titulo = ordenacaoNome === 3 ? tituloNome : tituloNome + ' (' + textoOrdenacao + ')';
-        $('.sortable1.name-column').text(titulo);
-      }
-    });
-  </script> -->
   <script>
     $(document).ready(function() {
-      // // Função para formatar o nome com a primeira letra de cada palavra maiúscula
-      // function formatarNome() {
-      //   var nome = $("#nome").val();
-      //   nome = nome.toLowerCase().replace(/(^|\s)\S/g, function(l) {
-      //     return l.toUpperCase();
-      //   });
-      //   $("#nome").val(nome);
-      // }
-
-      // // Aplica a formatação quando o campo Nome perde o foco
-      // $("#nome").blur(function() {
-      //   formatarNome();
-      // });
-
-      // Organiza a tabela de acordo com o que for selecionado na caixa de filtro de Nome
-      // Sendo: Nome, A-Z, Z-A
       $("#snomes").change(function() {
         var ordenacao = $("#snomes").val();
         ordenarTabela(ordenacao);

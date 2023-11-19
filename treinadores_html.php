@@ -64,7 +64,6 @@ include 'navbar.php';
               <thead>
                 <tr>
                   <th scope="col">ID</th>
-                  <!-- <th scope="col" class="sortable1 name-column">Nome 🔽</th> -->
                   <th scope="col">
                     <div class="row">
                       <div class="col text-center">
@@ -94,7 +93,7 @@ include 'navbar.php';
                     echo '<td>' . $registro['nome'] . '</td>';
                     echo '<td>' . $registro['login'] . '</td>';
                     echo '<td>' . $registro['senha'] . '</td>';
-                    echo '<td><a href="editatreinador.php?id=' . $id . '" data-bs-toggle="modal" data-id="' . $id . '" data-bs-target="#exampleModal1' . $id . '" style="text-decoration: none;" data-bs-toggle="tooltip" title="Editar">✏️</a> | <a href="excluirtreinador.php?id=' . $id . '" style="text-decoration: none;" data-bs-toggle="tooltip" title="Excluir">🗑️</a></td>';
+                    echo '<td><a href="editatreinador.php?id=' . $id . '" data-bs-toggle="modal" data-id="' . $id . '" data-bs-target="#exampleModal1' . $id . '" style="text-decoration: none;" data-bs-toggle="tooltip" title="Editar">✏️</a> | <a href="excluirtreinador.php?id=' . $id . '" style="text-decoration: none;" data-bs-toggle="tooltip" onclick="return confirm(\'Tem certeza que deseja excluir?\')" title="Excluir">🗑️</a></td>';
                     echo '</tr>';
                     echo '<div class="modal fade" id="exampleModal1' . $id . '" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">';
                     echo '<div class="modal-dialog modal-dialog-centered">';

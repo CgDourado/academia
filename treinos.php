@@ -53,7 +53,6 @@ include 'navbar.php';
               <thead>
                 <tr>
                   <th scope="col">ID</th>
-                  <!-- <th scope="col" class="sortable1 name-column">Nome 🔽</th> -->
                   <th scope="col">
                     <div class="row">
                       <div class="col text-center">
@@ -119,7 +118,6 @@ include 'navbar.php';
                     echo '</div>';
                     echo '</div>';
                     echo '</div>';
-
                     //Parte da visualização do treino 
                     echo '</tr>';
                     echo '<div class="modal fade" id="exampleModalT' . $id . '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">';
@@ -131,11 +129,6 @@ include 'navbar.php';
                     echo '</div>';
                     echo '<div class="modal-body">';
                     include 'vertreino.php';
-                    // echo '<div class="modal-footer">';
-                    // echo '</a><a href="excluirtreino.php?id=' . $id . '" style="text-decoration: none; display: flex; align-items: center;" data-bs-toggle="tooltip" title="Excluir">
-                    //     <span style="font-size: 24px; cursor: pointer;">🗑️</span>
-                    //   </a>
-                    // </div>';
                     echo '</div>';
                     echo '</div>';
                     echo '</div>';

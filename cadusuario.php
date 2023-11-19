@@ -8,7 +8,8 @@ $data_nascimento = $_POST['data_nascimento'];
 $peso = $_POST['peso'];
 $altura = $_POST['altura'];
 $imc = calcularIMC($peso, $altura);
-function calcularIMC($peso, $altura) {
+function calcularIMC($peso, $altura)
+{
     $imc = $peso / ($altura * $altura);
     $imc = round($imc, 2);
     return $imc;
@@ -25,7 +26,7 @@ $current_date = new DateTime();
 $age = $current_date->diff($birth_date)->y;
 
 $query = $conn->query("SELECT * FROM usuario WHERE cpf='$cpf'");
-if(mysqli_num_rows($query) > 0){
+if (mysqli_num_rows($query) > 0) {
     echo "<script language='javascript' type='text/javascript'>
     alert('Usuário já Existente!');
     window.location.href='usuarios_html.php';
@@ -49,4 +50,3 @@ if(mysqli_num_rows($query) > 0){
         </script>";
     }
 }
-?>
