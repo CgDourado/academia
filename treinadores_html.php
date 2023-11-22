@@ -17,14 +17,12 @@ include 'navbar.php';
   <meta http-equiv="content-language" content="pt-br">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Biblioteca</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-brasil/js-brasil.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
   <style>
     .header {
       float: right;
@@ -66,7 +64,17 @@ include 'navbar.php';
               <thead>
                 <tr>
                   <th scope="col">ID</th>
-                  <th scope="col" class="sortable1 name-column">Nome 🔽</th>
+                  <th scope="col">
+                    <div class="row">
+                      <div class="col text-center">
+                        <select id="snomes2" name="snomes2" class="form-select mx-auto" aria-label="Filtro" style="width: 100px;">
+                          <option value="id" selected>Nomes</option>
+                          <option value="az">A-Z</option>
+                          <option value="za">Z-A</option>
+                        </select>
+                      </div>
+                    </div>
+                  </th>
                   <th scope="col">Login</th>
                   <th scope="col">Senha</th>
                   <th scope="col">Ações</th>
@@ -85,8 +93,7 @@ include 'navbar.php';
                     echo '<td>' . $registro['nome'] . '</td>';
                     echo '<td>' . $registro['login'] . '</td>';
                     echo '<td>' . $registro['senha'] . '</td>';
-
-                    echo '<td><a href="editatreinador.php?id=' . $id . '" data-bs-toggle="modal" data-id="' . $id . '" data-bs-target="#exampleModal1' . $id . '" style="text-decoration: none;" data-bs-toggle="tooltip" title="Editar">✏️</a> | <a href="excluirtreinador.php?id=' . $id . '" style="text-decoration: none;" data-bs-toggle="tooltip" title="Excluir">🗑️</a></td>';
+                    echo '<td><a href="editatreinador.php?id=' . $id . '" data-bs-toggle="modal" data-id="' . $id . '" data-bs-target="#exampleModal1' . $id . '" style="text-decoration: none;" data-bs-toggle="tooltip" title="Editar">✏️</a> | <a href="excluirtreinador.php?id=' . $id . '" style="text-decoration: none;" data-bs-toggle="tooltip" onclick="return confirm(\'Tem certeza que deseja excluir?\')" title="Excluir">🗑️</a></td>';
                     echo '</tr>';
                     echo '<div class="modal fade" id="exampleModal1' . $id . '" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">';
                     echo '<div class="modal-dialog modal-dialog-centered">';
@@ -129,24 +136,13 @@ include 'navbar.php';
           <form id="registrationForm" action="cadtreinador.php" method="POST">
             <div class="form-group">
               <label>Nome</label>
-              <input type="text" class="form-control" name="nome" id="nome" placeholder="Insira o nome completo" required />
+              <input type="text" class="form-control" name="nome" id="nomet" placeholder="Insira o nome completo" required />
               <br />
               <label>Login</label>
               <input type="text" class="form-control" name="login" placeholder="Insira o Login" required />
               <br />
               <label class='form-label' style="float: left; margin: 1px;">Senha</label>
-              <input class='form-control' type='password' name='senha' id="senha" placeholder='Digite a sua senha' required />
-              <div class="mostrar-senha" style="float: left;">
-                <input type="checkbox" id="chk" float: left> Mostrar Senha</input>
-                <script>
-                  const senha = document.getElementById("senha");
-                  const chk = document.getElementById("chk");
-
-                  chk.onchange = function(e) {
-                    senha.type = chk.checked ? "text" : "password";
-                  };
-                </script>
-              </div>
+              <input class='form-control' type='text' name="senha" id="senha" placeholder='Digite a sua senha' required />
               <br /><br />
               <div class="d-grid gap-2 col-20 mx-auto">
                 <button type="submit" id="submit" class="btn btn-success cadastrar-button">Cadastrar</button>
@@ -157,17 +153,17 @@ include 'navbar.php';
             $(document).ready(function() {
               // Função para formatar o nome com a primeira letra de cada palavra maiúscula
               function formatarNome() {
-                var nome = $("#nome").val();
+                var nome = $("#nomet").val();
 
                 nome = nome.toLowerCase().replace(/(^|\s)\S/g, function(l) {
                   return l.toUpperCase();
                 });
 
-                $("#nome").val(nome);
+                $("#nomet").val(nome);
               }
 
               // Aplica a formatação quando o campo Nome perde o foco
-              $("#nome").blur(function() {
+              $("#nomet").blur(function() {
                 formatarNome();
               });
             });
@@ -191,41 +187,46 @@ include 'navbar.php';
   </script>
   <script>
     $(document).ready(function() {
-      var ordenacao = 0; // 0: Ordenação original, 1: A-Z, 2: Z-A
+      // Função para formatar o nome com a primeira letra de cada palavra maiúscula
+      function formatarNome() {
+        var nome = $("#nome").val();
+        nome = nome.toLowerCase().replace(/(^|\s)\S/g, function(l) {
+          return l.toUpperCase();
+        });
+        $("#nome").val(nome);
+      }
 
-      $('.sortable1').click(function() {
-        ordenacao = (ordenacao + 1) % 4;
+      // Aplica a formatação quando o campo Nome perde o foco
+      $("#nome").blur(function() {
+        formatarNome();
+      });
+
+      // Adicione esta parte para aplicar a ordenação
+      $("#snomes2").change(function() {
+        var ordenacao = $("#snomes2").val();
         ordenarTabela(ordenacao);
       });
 
       function ordenarTabela(ordenacao) {
-        var rows = $('#clienteTable tbody tr').get();
-
-        if (ordenacao === 1) {
-          // Ordenar por Nome A-Z
-          rows.sort(function(a, b) {
-            var nomeA = $(a).find('td:eq(1)').text().toUpperCase();
-            var nomeB = $(b).find('td:eq(1)').text().toUpperCase();
-            return nomeA.localeCompare(nomeB);
-          });
-        } else if (ordenacao === 2) {
-          // Ordenar por Nome Z-A
-          rows.sort(function(a, b) {
-            var nomeA = $(a).find('td:eq(1)').text().toUpperCase();
-            var nomeB = $(b).find('td:eq(1)').text().toUpperCase();
-            return nomeB.localeCompare(nomeA);
-          });
-        } else if (ordenacao === 3) {
-          // Ordenar por ID
-          rows.sort(function(a, b) {
-            var idA = parseInt($(a).find('td:eq(0)').text());
-            var idB = parseInt($(b).find('td:eq(0)').text());
-            return idA - idB;
-          });
-        }
+        var rows = $("tbody tr").get();
+        rows.sort(function(a, b) {
+          if (ordenacao === "id") {
+            var keyA = parseInt($(a).find("td:eq(0)").text());
+            var keyB = parseInt($(b).find("td:eq(0)").text());
+            return keyA - keyB;
+          } else if (ordenacao === "az") {
+            var keyA = $(a).find("td:eq(1)").text();
+            var keyB = $(b).find("td:eq(1)").text();
+            return keyA.localeCompare(keyB);
+          } else if (ordenacao === "za") {
+            var keyA = $(a).find("td:eq(1)").text();
+            var keyB = $(b).find("td:eq(1)").text();
+            return keyB.localeCompare(keyA);
+          }
+        });
 
         $.each(rows, function(index, row) {
-          $('#clienteTable tbody').append(row);
+          $("tbody").append(row);
         });
       }
     });

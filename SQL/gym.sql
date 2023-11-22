@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 16/10/2023 às 02:55
+-- Tempo de geração: 13/11/2023 às 20:36
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.2.4
 
@@ -31,15 +31,16 @@ CREATE TABLE `dono` (
   `id` int(11) NOT NULL,
   `nome` varchar(120) NOT NULL,
   `login` varchar(100) NOT NULL,
-  `senha` varchar(100) NOT NULL
+  `senha` varchar(100) NOT NULL,
+  `cargo` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `dono`
 --
 
-INSERT INTO `dono` (`id`, `nome`, `login`, `senha`) VALUES
-(1, 'Cariani Junior', 'carianij', 'cj123');
+INSERT INTO `dono` (`id`, `nome`, `login`, `senha`, `cargo`) VALUES
+(1, 'Cariani Junior', 'carianij', 'cj123', 'dono');
 
 -- --------------------------------------------------------
 
@@ -51,7 +52,8 @@ CREATE TABLE `treinadores` (
   `id` int(11) NOT NULL,
   `nome` varchar(120) NOT NULL,
   `login` varchar(100) NOT NULL,
-  `senha` varchar(100) NOT NULL
+  `senha` varchar(100) NOT NULL,
+  `cargo` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -82,11 +84,14 @@ CREATE TABLE `usuario` (
   `telefone` varchar(20) NOT NULL,
   `cpf` varchar(15) NOT NULL,
   `data_nascimento` date NOT NULL,
+  `idade` int(5) NOT NULL,
   `peso` varchar(15) NOT NULL,
   `altura` varchar(15) NOT NULL,
+  `sexo` varchar(20) NOT NULL,
   `imc` varchar(15) NOT NULL,
   `pagamento` varchar(20) NOT NULL,
-  `plano` varchar(20) NOT NULL
+  `plano` varchar(20) NOT NULL,
+  `treinador` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

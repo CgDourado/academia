@@ -8,6 +8,11 @@ if (!isset($_SESSION["user"])) {
 }
 include 'cabecalho.php';
 include 'navbar.php';
+include 'conecta.php';
+
+if ($conn->connect_error) {
+  die("Erro de conexão com o banco de dados: " . $conn->connect_error);
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -26,6 +31,32 @@ include 'navbar.php';
     .letra {
       font-size: small;
     }
+
+    .table-container {
+      max-height: 304px;
+      height: 304px;
+      /* Defina a altura máxima desejada */
+      overflow-y: auto;
+    }
+
+    .payment-column-home:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .treinadores {
+      max-height: 304px;
+      height: 304px;
+      /* Defina a altura máxima desejada */
+      overflow-y: auto;
+    }
+
+    .clientes {
+      max-height: 304px;
+      height: 304px;
+      /* Defina a altura máxima desejada */
+      overflow-y: auto;
+    }
   </style>
 </head>
 
@@ -40,12 +71,6 @@ include 'navbar.php';
     <div class="row justify-content-center row-cols-1 row-cols-md-3 mb-3 text-center">
       <div class="col" style="max-width: 1000px;">
         <div class="card mb-4 rounded-3 shadow-sm: 0" style="border: none;">
-          <div style="font-size: 50px; margin-top: 12vh; font-weight: 700; margin-bottom: 24px; text-align: center; line-height: 1.1; max-width: 1200px;">
-            <?php
-            $usuario = $_SESSION["user"];
-            echo "<font color='black'>Olá, " . $usuario . ".</font>";
-            ?>
-          </div>
         </div>
       </div>
     </div>
@@ -55,12 +80,117 @@ include 'navbar.php';
           <div class="card shadow-sm">
             <div class="card-header">
               <h4 class="my-0 fw-normal"><b><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-screwdriver" viewBox="0 0 16 16">
-                    <path d="m0 1 1-1 3.081 2.2a1 1 0 0 1 .419.815v.07a1 1 0 0 0 .293.708L10.5 9.5l.914-.305a1 1 0 0 1 1.023.242l3.356 3.356a1 1 0 0 1 0 1.414l-1.586 1.586a1 1 0 0 1-1.414 0l-3.356-3.356a1 1 0 0 1-.242-1.023L9.5 10.5 3.793 4.793a1 1 0 0 0-.707-.293h-.071a1 1 0 0 1-.814-.419L0 1zm11.354 9.646a.5.5 0 0 0-.708.708l3 3a.5.5 0 0 0 .708-.708l-3-3z" />
-                  </svg>&nbsp;&nbsp;Quadro 1</b></h4>
+                    <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                  </svg>&nbsp;&nbsp;Clientes</b></h4>
             </div>
-            <div class="card-body">
+            <div class="card-body clientes">
+            <?php
+                include 'conecta.php';
+
+                if ($conn->connect_error) {
+                  die("Erro de conexão com o banco de dados: " . $conn->connect_error);
+                }
+
+                if (isset($_SESSION["cargo"])) {
+                  $cargo = $_SESSION["cargo"];
+
+                  if ($cargo === 'dono') {
+                    $sql = "SELECT sexo, COUNT(*) AS quantidade FROM usuario GROUP BY sexo";
+                  } elseif ($cargo === 'treinador') {
+                    $nome_treinador = $_SESSION['user'];
+                    $sql = "SELECT sexo, COUNT(*) AS quantidade FROM usuario WHERE treinador = '$nome_treinador' GROUP BY sexo;";
+                  }
+                  $result = $conn->query($sql);
+                }
+
+              if ($result->num_rows > 0) {
+                $homens = 0;
+                $mulheres = 0;
+                $outros = 0;
+
+                while ($row = $result->fetch_assoc()) {
+                  $sexo = $row["sexo"];
+                  $quantidade = $row["quantidade"];
+
+                  if ($sexo === "Homem") {
+                    $homens += $quantidade;
+                  } elseif ($sexo === "Mulher") {
+                    $mulheres += $quantidade;
+                  } elseif ($sexo === "Outro") {
+                    $outros += $quantidade;
+                  }
+                }
+
+                $sexoPluralHomem = $homens > 1 ? "Homens" : "Homem";
+                $sexoPluralMulher = $mulheres > 1 ? "Mulheres" : "Mulher";
+                $sexoPluralOutro = $outros > 1 ? "Outros" : "Outro";
+
+                echo "{$sexoPluralHomem}: $homens<br>";
+                echo "{$sexoPluralMulher}: $mulheres<br>";
+                echo "{$sexoPluralOutro}: $outros<br>";
+              } else {
+                echo "Nenhum cliente encontrado.";
+              }
+
+              $conn->close();
+              ?>
+
               <center>
-                <img src="css/home1.jpeg" width="200">
+                <?php
+                include 'conecta.php';
+
+                if ($conn->connect_error) {
+                  die("Erro de conexão com o banco de dados: " . $conn->connect_error);
+                }
+
+                if (isset($_SESSION["cargo"])) {
+                  $cargo = $_SESSION["cargo"];
+
+                  if ($cargo === 'dono') {
+                    $sql = "SELECT sexo, COUNT(*) AS quantidade FROM usuario GROUP BY sexo";
+                  } elseif ($cargo === 'treinador') {
+                    $nome_treinador = $_SESSION['user'];
+                    $sql = "SELECT sexo, COUNT(*) AS quantidade FROM usuario WHERE treinador = '$nome_treinador' GROUP BY sexo;";
+                  }
+                  $result = $conn->query($sql);
+                }
+                ?>
+
+                <div id="chart_div" style="width: 100%; height: 100%;"></div>
+
+                <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                <script type="text/javascript">
+                  google.charts.load('current', {
+                    'packages': ['corechart']
+                  });
+                  google.charts.setOnLoadCallback(drawChart);
+
+                  function drawChart() {
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Sexo');
+                    data.addColumn('number', 'Quantidade');
+                    data.addRows([
+                      <?php
+                      if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                          $sexo = $row["sexo"];
+                          $quantidade = $row["quantidade"];
+                          echo "['{$sexo}', {$quantidade}],";
+                        }
+                      }
+                      ?>
+                    ]);
+
+                    var options = {
+                      title: 'Clientes por Sexo',
+                      sliceVisibilityThreshold: 0.2,
+                      is3D: true,
+                    };
+
+                    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+                    chart.draw(data, options);
+                  }
+                </script>
               </center>
             </div>
           </div>
@@ -69,13 +199,58 @@ include 'navbar.php';
           <div class="card shadow-sm">
             <div class="card-header">
               <h4 class="my-0 fw-normal"><b><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-diagram-3" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5v-1zM8.5 5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1zM0 11.5A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z" />
-                  </svg>&nbsp;&nbsp;Quadro 2</b></h4>
+                    <path d="M4 10.781c.148 1.667 1.513 2.85 3.591 3.003V15h1.043v-1.216c2.27-.179 3.678-1.438 3.678-3.3 0-1.59-.947-2.51-2.956-3.028l-.722-.187V3.467c1.122.11 1.879.714 2.07 1.616h1.47c-.166-1.6-1.54-2.748-3.54-2.875V1H7.591v1.233c-1.939.23-3.27 1.472-3.27 3.156 0 1.454.966 2.483 2.661 2.917l.61.162v4.031c-1.149-.17-1.94-.8-2.131-1.718H4zm3.391-3.836c-1.043-.263-1.6-.825-1.6-1.616 0-.944.704-1.641 1.8-1.828v3.495l-.2-.05zm1.591 1.872c1.287.323 1.852.859 1.852 1.769 0 1.097-.826 1.828-2.2 1.939V8.73l.348.086z" />
+                  </svg>&nbsp;&nbsp;Pagamentos</b></h4>
             </div>
-            <div class="card-body">
-              <center>
-                <img src="css/home2.jpeg" width="200">
-              </center>
+            <div class="card-body table-container">
+              <table class="table table-striped table-pagamentos">
+                <thead>
+                  <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">
+                      <div class="row">
+                        <div class="col">
+                          <select id="status" name="status" class="form-select" aria-label="Filtro" style="width: 140px;">
+                            <option value="Todos" selected>Status</option>
+                            <option value="A Pagar">A Pagar</option>
+                            <option value="Negociando">Negociando</option>
+                          </select>
+                        </div>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  include 'conecta.php';
+                  if (isset($_SESSION["cargo"])) {
+                    $cargo = $_SESSION["cargo"];
+                    if ($cargo === 'dono') {
+                      $nome_treinador = $_SESSION["user"];
+                      $pesquisa = mysqli_query($conn, "SELECT * FROM usuario");
+                    } elseif ($cargo === 'treinador') {
+                      $nome_treinador = $_SESSION["user"];
+                      $pesquisa = mysqli_query($conn, "SELECT * FROM usuario WHERE treinador='$nome_treinador'");
+                    }
+                  }
+                  $row = mysqli_num_rows($pesquisa);
+                  if ($row > 0) {
+                    while ($registro = $pesquisa->fetch_array()) {
+                      $id = $registro['id'];
+                      $pagamento = $registro['pagamento'];
+
+                      // Verifique se o pagamento é "A pagar" ou "Negociando" para exibir a linha
+                      if ($pagamento === "A Pagar" || $pagamento === "Negociando") {
+                        echo '<tr>';
+                        echo '<td>' . $registro['nome'] . '</td>';
+                        echo '<td>' . $pagamento . '</td>';
+                        echo '</tr>';
+                      }
+                    }
+                  }
+                  ?>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -83,20 +258,61 @@ include 'navbar.php';
           <div class="card shadow-sm">
             <div class="card-header">
               <h4 class="my-0 fw-normal"><b><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-ticket-detailed" viewBox="0 0 16 16">
-                    <path d="M4 5.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5Zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5ZM5 7a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2H5Z" />
-                    <path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6V4.5ZM1.5 4a.5.5 0 0 0-.5.5v1.05a2.5 2.5 0 0 1 0 4.9v1.05a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-1.05a2.5 2.5 0 0 1 0-4.9V4.5a.5.5 0 0 0-.5-.5h-13Z" />
-                  </svg>&nbsp;&nbsp;Quadro 3</b></h4>
+                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
+                  </svg>&nbsp;&nbsp;Treinadores</b></h4>
             </div>
-            <div class="card-body">
-              <center>
-                <img src="css/home3.jpeg" width="200">
-              </center>
+            <div class="card-body treinadores">
+              <table class="table table-striped table-treinadores">
+                <tbody>
+                  <?php
+                  include 'conecta.php';
+                  $pesquisa = mysqli_query($conn, "SELECT * FROM treinadores");
+                  $row = mysqli_num_rows($pesquisa);
+                  if ($row > 0) {
+                    while ($registro = $pesquisa->fetch_array()) {
+                      $id = $registro['id'];
+                      echo '<tr>';
+                      echo '<td>' . $registro['nome'] . '</td>';
+                    }
+                    echo '</tbody>';
+                    echo '</table>';
+                  } else {
+                    echo 'Sem Treinadores no momento.';
+                    echo '</tbody>';
+                    echo '</table>';
+                  }
+                  ?>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <script>
+    // Filtra a tabela de pagamento de acordo com o que for selecionado
+    $(document).ready(function() {
+      var ordenacaoStatus = 'Todos'; // Inicialmente, mostrar todos
+
+      $('#status').change(function() {
+        ordenacaoStatus = $('#status').val();
+        filtrarStatus(ordenacaoStatus, '.table-pagamentos');
+      });
+
+      function filtrarStatus(status, tableSelector) {
+        var rows = $(tableSelector + ' tbody tr');
+        rows.show(); // Mostrar todas as linhas
+
+        if (status !== 'Todos') {
+          rows.filter(function() {
+            return $(this).find('td:eq(1)').text().trim() !== status;
+          }).hide();
+        }
+      }
+    });
+  </script>
 </body>
 
 </html>

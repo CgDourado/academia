@@ -7,6 +7,7 @@
         if (mysqli_num_rows($logar)> 0){
             $dados = mysqli_fetch_assoc($logar);
             $_SESSION["user"] = $dados["nome"];
+            $_SESSION["cargo"] = $dados["cargo"];
             echo ("<script>window.location.replace('inicio.php');</script>");    
             }
         else {
