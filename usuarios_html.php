@@ -470,5 +470,3 @@ include 'navbar.php';
 </body>
 
 </html>
-
-------
