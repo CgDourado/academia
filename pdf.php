@@ -4,14 +4,14 @@ use Dompdf\Options;
 
 require_once 'dompdf/autoload.inc.php';
 
-if (isset($_GET['treino']) && isset($_GET['cliente']) && isset($_GET['id'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['treino']) && isset($_POST['cliente']) && isset($_POST['id'])) {
     $options = new Options();
     $options->set('defaultFont', 'sans');
     $dompdf = new Dompdf($options);
 
     // Use o ID recebido para obter o treino correto do banco de dados
     include 'conecta.php';
-    $id = $_GET['id'];
+    $id = $_POST['id'];
     $sql = "SELECT * FROM treinos WHERE id=$id";
     $query = $conn->query($sql);
     $dados = $query->fetch_array();
@@ -30,7 +30,7 @@ if (isset($_GET['treino']) && isset($_GET['cliente']) && isset($_GET['id'])) {
         $dompdf->render();
 
         // Define o nome do arquivo com base no nome do cliente
-        $filename = 'treino_cliente_' . $_GET['cliente'] . '.pdf';
+        $filename = 'treino_cliente_' . $_POST['cliente'] . '.pdf';
 
         // Exibe o PDF no navegador com a opção de download
         $dompdf->stream($filename, array('Attachment' => 1));

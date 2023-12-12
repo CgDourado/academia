@@ -19,10 +19,10 @@ include 'navbar.php';
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-brasil/js-brasil.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
-
+  <script src="https://rawgit.com/RobinHerbots/Inputmask/5.x/dist/jquery.inputmask.min.js"></script>
 
   <style>
     .header {
@@ -219,27 +219,22 @@ include 'navbar.php';
               </script>
               <br />
               <label>Ano de Nascimento</label>
-              <input type="text" class="form-control" id='data_nascimento' name="data_nascimento" placeholder="Insira a Data de Nascimento" required />
-              <script>
-                $(document).ready(function() {
-                  $('#data_nascimento').mask('00/00/0000');
-                });
-              </script>
+              <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" max="<?php echo date('Y-m-d'); ?>" placeholder="Insira a Data de Nascimento" required />
               <br />
-              <label for="peso">Peso (kg)</label>
-              <input id="peso" type="text" class="form-control" name="peso" step="0.01" placeholder="Insira seu Peso" required />
+              <label>Peso (kg)</label>
+              <input id="peso" type="text" class="form-control" name="peso" placeholder="Insira seu Peso" required />
               <script>
-                // Adicione a máscara ao campo de entrada
-                $(document).ready(function() {
-                  $('#peso').inputmask({
-                    alias: 'numeric',
-                    groupSeparator: '',
-                    autoGroup: true,
-                    digits: 2,
-                    digitsOptional: false,
-                    prefix: '',
-                    rightAlign: false
-                  });
+                // Adiciona um ouvinte de eventos ao campo de peso
+                $(document).on('input', '#peso', function() {
+                  // Substitui qualquer ponto por vírgula
+                  this.value = this.value.replace(/\./g, ',');
+
+                  // Verifica se há mais de duas casas decimais após a vírgula e ajusta conforme necessário
+                  var parts = this.value.split(',');
+                  if (parts.length > 1) {
+                    parts[1] = parts[1].slice(0, 2); // Limita a duas casas decimais
+                    this.value = parts.join(',');
+                  }
                 });
               </script>
               <br />
