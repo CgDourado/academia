@@ -22,14 +22,14 @@ while ($dados = $query->fetch_array()) {
     <div class="form-group">
       <br />
       <label>Visualizar o Treino:</label>
-      <textarea type="text" class="form-control" rows="10" name="treino" id="treino" style='margin-top: 10px' readonly><?php echo $treino; ?></textarea>
+      <textarea type="text" class="form-control" rows="10" name="treino" id="treino" style='margin-top: 10px' maxlength="8000" readonly><?php echo $treino; ?></textarea>
       <br />
       <div class="modal-footer">
         <div class="d-flex justify-content-end align-items-center">
-          <a href="#" data-bs-toggle="tooltip" title="Baixar PDF" style="margin-right: 10px; text-decoration: none;" onclick="baixarTreino(<?php echo $id; ?>, '<?php echo $nomeCliente; ?>')">
+          <a href="#" data-bs-toggle="tooltip" title="Baixar PDF" style="margin-right: 10px; text-decoration: none;" onclick="baixarTreino('<?php echo $id; ?>', '<?php echo $nomeCliente; ?>')">
             <span style="font-size: 24px; cursor: pointer;">⬇️</span>
           </a>
-          <a href="excluirtreino.php?id=<?php echo $id; ?>" data-bs-toggle="tooltip" title="Excluir" style="text-decoration: none;">
+          <a href="excluirtreino.php?id=<?php echo $id; ?>" data-bs-toggle="tooltip" title="Excluir" style="text-decoration: none;" onclick="return confirm('Tem certeza que deseja excluir?')">
             <span style="font-size: 24px; cursor: pointer;">🗑️</span>
           </a>
         </div>
@@ -75,18 +75,37 @@ while ($dados = $query->fetch_array()) {
       // Substitui quebras de linha por <br>
       treino = treino.replace(/\n/g, "<br>");
 
-      // Cria um link direto para o script pdf.php com os parâmetros necessários
-      var link = document.createElement('a');
-      link.href = 'pdf.php?treino=' + encodeURIComponent(treino) + '&cliente=' + encodeURIComponent(nomeCliente) + '&id=' + id;
-      link.target = '_blank';
+      // Cria um formulário dinâmico
+      var form = document.createElement('form');
+      form.action = 'pdf.php';
+      form.method = 'POST';
+      form.target = '_blank';
 
-      // Adiciona o link à página e simula o clique
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      // Adiciona campos ao formulário
+      var treinoInput = document.createElement('input');
+      treinoInput.type = 'hidden';
+      treinoInput.name = 'treino';
+      treinoInput.value = treino;
+      form.appendChild(treinoInput);
+
+      var clienteInput = document.createElement('input');
+      clienteInput.type = 'hidden';
+      clienteInput.name = 'cliente';
+      clienteInput.value = nomeCliente;
+      form.appendChild(clienteInput);
+
+      var idInput = document.createElement('input');
+      idInput.type = 'hidden';
+      idInput.name = 'id';
+      idInput.value = id;
+      form.appendChild(idInput);
+
+      // Adiciona o formulário à página e o envia
+      document.body.appendChild(form);
+      form.submit();
+      document.body.removeChild(form);
     }
   </script>
 </body>
 
 </html>
--

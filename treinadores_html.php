@@ -76,7 +76,6 @@ include 'navbar.php';
                     </div>
                   </th>
                   <th scope="col">Login</th>
-                  <th scope="col">Senha</th>
                   <th scope="col">Ações</th>
                 </tr>
               </thead>
@@ -92,7 +91,6 @@ include 'navbar.php';
                     echo '<td>' . $registro['id'] . '</td>';
                     echo '<td>' . $registro['nome'] . '</td>';
                     echo '<td>' . $registro['login'] . '</td>';
-                    echo '<td>' . $registro['senha'] . '</td>';
                     echo '<td><a href="editatreinador.php?id=' . $id . '" data-bs-toggle="modal" data-id="' . $id . '" data-bs-target="#exampleModal1' . $id . '" style="text-decoration: none;" data-bs-toggle="tooltip" title="Editar">✏️</a> | <a href="excluirtreinador.php?id=' . $id . '" style="text-decoration: none;" data-bs-toggle="tooltip" onclick="return confirm(\'Tem certeza que deseja excluir?\')" title="Excluir">🗑️</a></td>';
                     echo '</tr>';
                     echo '<div class="modal fade" id="exampleModal1' . $id . '" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">';

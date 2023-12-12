@@ -34,7 +34,7 @@ while ($dados = $query->fetch_array()) {
 
 <body>
   <form id="editaForm" action="edusuario.php?id=<?php echo $id; ?>" method="POST">
-    <div class="form-group">
+    <div class="form-group text-start">
       <label>Nome</label>
       <input type="text" class="form-control nome-field" name="nome" value="<?php echo $nome; ?>" required />
       <br />
@@ -53,15 +53,24 @@ while ($dados = $query->fetch_array()) {
       <input type="cpf" class="form-control cpf-field" id="cpf" name="cpf" value="<?php echo $cpf; ?>" required readonly />
       <br />
       <label>Ano de Nascimento</label>
-      <input type="text" class="form-control" id='data_nascimento' name="data_nascimento" placeholder="Insira a Data de Nascimento" value="<?php echo $nascimento; ?>" required />
-      <script>
-        $(document).on('focus', '#data_nascimento', function() {
-          $(this).mask('00/00/0000');
-        });
-      </script>
+      <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" max="<?php echo date('Y-m-d'); ?>" value="<?php echo $data_nascimento; ?>" required />
       <br />
       <label>Peso (kg)</label>
-      <input id="peso" type="text" class="form-control" name="peso" step="0.01" value="<?php echo $peso; ?>" required />
+      <input id="peso" type="text" class="form-control" name="peso" value="<?php echo $peso; ?>" required />
+      <script>
+        // Adiciona um ouvinte de eventos ao campo de peso
+        $(document).on('input', '#peso', function() {
+          // Substitui qualquer ponto por vírgula
+          this.value = this.value.replace(/\./g, ',');
+
+          // Verifica se há mais de duas casas decimais após a vírgula e ajusta conforme necessário
+          var parts = this.value.split(',');
+          if (parts.length > 1) {
+            parts[1] = parts[1].slice(0, 2); // Limita a duas casas decimais
+            this.value = parts.join(',');
+          }
+        });
+      </script>
       <br />
       <label>Altura</label>
       <input id="altura" type="number" class="form-control" name="altura" step="0.01" value="<?php echo $altura; ?>" required />

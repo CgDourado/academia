@@ -1,6 +1,6 @@
 <?php
     include 'conecta.php';
-    $id = $_GET['id'];
+    $id = $_POST['id'];
     $treino = $_POST['treino'];
 
     // Preparando a consulta

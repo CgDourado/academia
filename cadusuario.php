@@ -1,5 +1,6 @@
 <?php
 include 'conecta.php';
+
 $nome = $_POST['nome'];
 $email = $_POST['email'];
 $telefone = $_POST['telefone'];
@@ -8,22 +9,29 @@ $data_nascimento = $_POST['data_nascimento'];
 $peso = $_POST['peso'];
 $altura = $_POST['altura'];
 $imc = calcularIMC($peso, $altura);
+
 function calcularIMC($peso, $altura)
 {
     $imc = $peso / ($altura * $altura);
     $imc = round($imc, 2);
     return $imc;
 }
+
 $sexo = $_POST['sexo'];
 $pagamento = $_POST['pagamento'];
 $plano = $_POST['plano'];
 $treinador = $_POST['treinador'];
 
+// Calcular a idade
+$idade = calcularIdade($data_nascimento);
 
-// Calculate age based on the date of birth
-$birth_date = DateTime::createFromFormat('d/m/Y', $data_nascimento);
-$current_date = new DateTime();
-$age = $current_date->diff($birth_date)->y;
+function calcularIdade($data_nascimento)
+{
+    $data_nasc = new DateTime($data_nascimento);
+    $hoje = new DateTime();
+    $idade = $hoje->diff($data_nasc);
+    return $idade->y;
+}
 
 $query = $conn->query("SELECT * FROM usuario WHERE cpf='$cpf'");
 if (mysqli_num_rows($query) > 0) {
@@ -34,8 +42,7 @@ if (mysqli_num_rows($query) > 0) {
     exit();
 } else {
     mysqli_begin_transaction($conn);
-    $nascimento = $birth_date->format('Y-m-d');
-    $sql1 = "INSERT INTO usuario(nome, email, telefone, cpf, data_nascimento, idade, peso, altura, sexo, imc, pagamento, plano, treinador) VALUES ('$nome','$email','$telefone','$cpf','$nascimento','$age','$peso','$altura','$sexo','$imc','$pagamento','$plano','$treinador')";
+    $sql1 = "INSERT INTO usuario(nome, email, telefone, cpf, data_nascimento, idade, peso, altura, sexo, imc, pagamento, plano, treinador) VALUES ('$nome','$email','$telefone','$cpf','$data_nascimento','$idade','$peso','$altura','$sexo','$imc','$pagamento','$plano','$treinador')";
     $sql2 = "INSERT INTO treinos(nome, peso, altura, imc) VALUES ('$nome','$peso','$altura', '$imc')";
     if (mysqli_query($conn, $sql1) && mysqli_query($conn, $sql2)) {
         mysqli_commit($conn);
@@ -50,3 +57,4 @@ if (mysqli_num_rows($query) > 0) {
         </script>";
     }
 }
+?>
