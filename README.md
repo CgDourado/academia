@@ -24,14 +24,15 @@ Projeto de conclusão do curso TDS SENAI02 2023
        - Senha: cj123
 
 5. Funções:<br />
-     - Dono:
-       - Cadastrar | Editar | Excluir os Clientes
-       - Criar | Editar | Excluir os Treinos
-       - Cadastrar | Editar | Excluir os Treinadores
-     - Treinador:
-       - Restritamente Editar os Clientes
-       - Criar | Editar | Excluir os Treinos
-       - Cadastrar | Editar | Excluir os Treinadores
+     - Dono:<br />
+       - Cadastrar | Editar | Excluir os Clientes<br />
+       - Criar | Editar | Excluir | Baixar os Treinos<br />
+       - Cadastrar | Editar | Excluir os Treinadores<br />
+       - O Dono consegue ver todos os clientes<br />
+     - Treinador:<br />
+       - Restritamente Editar os Clientes<br />
+       - Criar | Editar | Excluir | Baixar os Treinos<br />
+       - O treinador consegue ver somente os clientes que foram designados a ele<br />
       
 # Requisitos 
      - Um computador com sistema operacional Windows
