@@ -22,6 +22,16 @@ Projeto de conclusão do curso TDS SENAI02 2023
      - Para acessar como DONO:
        - Usuário: carianij
        - Senha: cj123
+
+5. Funções:<br />
+     - Dono:
+       - Cadastrar | Editar | Excluir os Clientes
+       - Criar | Editar | Excluir os Treinos
+       - Cadastrar | Editar | Excluir os Treinadores
+     - Treinador:
+       - Restritamente Editar os Clientes
+       - Criar | Editar | Excluir os Treinos
+       - Cadastrar | Editar | Excluir os Treinadores
       
 # Requisitos 
      - Um computador com sistema operacional Windows
