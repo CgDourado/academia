@@ -18,12 +18,16 @@ Projeto de conclusão do curso TDS SENAI02 2023
 3. Iniciar o Sistema:<br />
      - Abra o navegador e acesse http://localhost/academia/.<br />
 
-4. Login:<br />
+# Funções da Aplicação
+
+1. Login:<br />
      - Para acessar como DONO:
        - Usuário: carianij
        - Senha: cj123
+     - Treinador:
+       - Será possivel acessar como treinador somente quando o mesmo for criado; Através da aba de Treinadores
 
-5. Funções:<br />
+2. Funções:<br />
      - Dono:<br />
        - Cadastrar | Editar | Excluir os Clientes<br />
        - Criar | Editar | Excluir | Baixar os Treinos<br />
