@@ -12,7 +12,7 @@
             }
         else {
             echo ("<script>alert('Login ou senha incorretos! Tente novamente.');</script>");
-            echo ("<script>window.location.replace('conta.php');</script>");
+            echo ("<script>window.location.replace('index.php');</script>");
         }
     mysqli_close($conn);
 ?>

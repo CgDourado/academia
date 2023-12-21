@@ -7,12 +7,8 @@ if (!isset($_SESSION["user"])) {
   exit;
 }
 include 'cabecalho.php';
-include 'navbar.php';
 include 'conecta.php';
-
-if ($conn->connect_error) {
-  die("Erro de conexão com o banco de dados: " . $conn->connect_error);
-}
+include 'navbar.php';
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -21,8 +17,9 @@ if ($conn->connect_error) {
   <meta charset="utf-8">
   <meta http-equiv="content-language" content="pt-br">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Músculos de Aço</title>
+  <title>Power Gym</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css">
   <style>
     .header {
       float: right;
@@ -65,7 +62,6 @@ if ($conn->connect_error) {
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <div class="container-fluid">
-    <hr>
     <br>
     <br>
     <div class="row justify-content-center row-cols-1 row-cols-md-3 mb-3 text-center">
@@ -84,24 +80,24 @@ if ($conn->connect_error) {
                   </svg>&nbsp;&nbsp;Clientes</b></h4>
             </div>
             <div class="card-body clientes">
-            <?php
-                include 'conecta.php';
+              <?php
+              include 'conecta.php';
 
-                if ($conn->connect_error) {
-                  die("Erro de conexão com o banco de dados: " . $conn->connect_error);
+              if ($conn->connect_error) {
+                die("Erro de conexão com o banco de dados: " . $conn->connect_error);
+              }
+
+              if (isset($_SESSION["cargo"])) {
+                $cargo = $_SESSION["cargo"];
+
+                if ($cargo === 'dono') {
+                  $sql = "SELECT sexo, COUNT(*) AS quantidade FROM usuario GROUP BY sexo";
+                } elseif ($cargo === 'treinador') {
+                  $nome_treinador = $_SESSION['user'];
+                  $sql = "SELECT sexo, COUNT(*) AS quantidade FROM usuario WHERE treinador = '$nome_treinador' GROUP BY sexo;";
                 }
-
-                if (isset($_SESSION["cargo"])) {
-                  $cargo = $_SESSION["cargo"];
-
-                  if ($cargo === 'dono') {
-                    $sql = "SELECT sexo, COUNT(*) AS quantidade FROM usuario GROUP BY sexo";
-                  } elseif ($cargo === 'treinador') {
-                    $nome_treinador = $_SESSION['user'];
-                    $sql = "SELECT sexo, COUNT(*) AS quantidade FROM usuario WHERE treinador = '$nome_treinador' GROUP BY sexo;";
-                  }
-                  $result = $conn->query($sql);
-                }
+                $result = $conn->query($sql);
+              }
 
               if ($result->num_rows > 0) {
                 $homens = 0;

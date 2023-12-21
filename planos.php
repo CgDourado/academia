@@ -35,7 +35,6 @@ include 'navbar.php';
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <div style="height: 100vh;">
     <div class="container-fluid">
-      <hr>
       <br>
       <br>
       <div class="row justify-content-center row-cols-1 row-cols-md-3 mb-3 text-center">
