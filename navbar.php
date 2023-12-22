@@ -16,19 +16,15 @@
         header {
             background-color: #141414;
             /* Cor de fundo da barra de navegação */
-            padding: 10px 20px;
+            padding: 1px 20px;
+            height: 80px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
         }
 
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .logo {
-            color: white;
-            /* Cor do texto do logo */
-            font-size: 24px;
         }
 
         .nav-links {
@@ -52,11 +48,25 @@
             /* Cor dos links ao passar o mouse sobre eles */
         }
 
-        .logo{
-            max-width: 100%;
-            /* Ajusta a largura máxima da imagem */
+        .logo img {
+            max-width: 35%;
+            /* Define a largura máxima da imagem como 100% do contêiner pai */
             height: auto;
-            /* Garante que a altura seja ajustada automaticamente */
+            /* Garante que a altura seja ajustada automaticamente para manter a proporção */
+            margin-top: -10px;
+        }
+
+        /* Adicionando estilos para o botão de sair */
+        .logout-btn {
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
         }
     </style>
 </head>
@@ -64,12 +74,14 @@
 <body>
     <header>
         <nav class="navbar">
-            <div class="logo" href="inicio.php"><img src="css/logo.png" alt="logo"></div>
+            <div class="logo"><img src="css/logo.png" alt="logo"></div>
             <ul class="nav-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Products</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Support</a></li>
+                <li><a href="inicio.php">Inicio</a></li>
+                <li><a href="usuarios_html.php">Clientes</a></li>
+                <li><a href="treinos.php">Treinos</a></li>
+                <li><a href="treinadores_html.php">Treinadores</a></li>
+                <li><a href="planos.php">Planos</a></li>
+                <li><a href="sair.php" class="logout-btn">Sair</a></li>
             </ul>
         </nav>
     </header>

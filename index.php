@@ -1,6 +1,14 @@
 <?php
 session_start();
 include 'cabecalho.php';
+if (isset($_SESSION['login_error']) && $_SESSION['login_error'] === true) {
+  echo '<div class="alert alert-danger alert-dismissible fade show fixed-top mx-auto" role="alert" style="margin-bottom: 0; width: 21%; margin-top: 10px; padding: 10px 15px;">
+          <strong>Login ou senha inválidos, tente novamente!</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="width: 6px; height: 6px"></button>
+        </div>';
+  // Limpe a variável de sessão para evitar que o alerta seja exibido novamente
+  unset($_SESSION['login_error']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -25,37 +33,43 @@ include 'cabecalho.php';
       /* Isso evita a repetição da imagem de fundo */
     }
 
-    .header {
-      float: right;
-    }
-
     .btn {
+      /* BOTÃO LOGIN */
       width: 100%;
     }
 
     .btn-secondary {
-      background-color: #ff0000;
+      /* BOTÃO LOGIN */
+      background-color: #e78834;
       /* Cor padrão do botão */
       color: #ffffff;
       transition: background-color 0.3s;
       /* Transição suave da cor de fundo */
+      border-color: #e78834;
+      border-radius: 13px;
+      height: 50px;
+      font-weight: bold;
+      font-size: 21px;
     }
 
     .btn-secondary:hover {
-      background-color: #cc0000;
+      /* BOTÃO LOGIN QUANDO MOUSE PASSA POR CIMA */
+      background-color: #a35f23;
       /* Cor quando o mouse passa sobre o botão */
       color: #ffffff;
-    }
-
-    .mostrar-senha {
-      /* Ajuste esta margem conforme necessário */
-      margin-left: 5px;
+      border-color: #a35f23;
     }
 
     #mask-custom {
+      /* DEIXA O CONTAINER QUE ESTÁ O LOGIN, TRANSLUCIDO */
       backdrop-filter: blur(10px);
       background-color: rgba(255, 255, 255, 0);
       color: white;
+    }
+
+    .mostrar-senha {
+      /* DISTANCIA DO BOTÃO DE MOSTRAR SENHA DA BORDA*/
+      margin-left: 5px;
     }
 
     .password-container {
@@ -71,6 +85,7 @@ include 'cabecalho.php';
     }
 
     .login-title {
+      /* TÍTULO DO LOGIN */
       font-size: 100px;
       margin-top: 5vh;
       font-weight: 700;
@@ -81,6 +96,24 @@ include 'cabecalho.php';
       font-family: 'Bebas Neue', 'Quicksand', sans-serif;
       letter-spacing: 5px;
     }
+
+    .logo-container {
+      /* DEIXA A LOGO CENTRALIZADA */
+      text-align: center;
+    }
+
+    .logo {
+      /* DEFINE A ALTURA DA LOGO*/
+      margin-top: 80px;
+      display: inline-block;
+    }
+
+    /* Adicione a seguinte regra CSS para dar espaçamento entre os inputs */
+    .form-control {
+      margin-bottom: 10px;
+      border-radius: 13px;
+      /* ou qualquer valor que desejar */
+    }
   </style>
 </head>
 
@@ -89,7 +122,9 @@ include 'cabecalho.php';
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <div class="container-fluid">
     <div class="login-container" style="margin-top: -40px;">
-      <img class="logo" src="css/logo.png" alt="logo" style="margin-top: 40px;">
+      <div class="logo-container">
+        <img class="logo" src="css/logo.png" alt="logo">
+      </div>
       <div class="row justify-content-center row-cols-1 row-cols-md-3 mb-3 text-center">
         <div class="col" style="max-width: 400px;">
           <div class="card mb-4 rounded-3 shadow-sm: 0" id="mask-custom">
@@ -110,7 +145,7 @@ include 'cabecalho.php';
                   </script>
                 </div>
                 <br /><br />
-                <button type="submit" class="btn btn-secondary">Login</button>
+                <button type="submit" class="btn btn-secondary text-center">Login</button>
               </form>
             </div>
           </div>
