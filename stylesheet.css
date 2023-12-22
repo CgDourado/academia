@@ -3,7 +3,7 @@ html {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: linear-gradient(to right, #e78834, #e78834);
+  background: #ececec; /* Cor sólida de fundo */
   overflow: hidden;
 }
 
@@ -13,6 +13,4 @@ html {
   height: 100%;
   top: 0;
   left: 0;
-  background-image: linear-gradient(to right, #e78834, #e78834);
-  background-size: cover;
 }

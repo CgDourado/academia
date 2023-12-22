@@ -23,6 +23,8 @@ include 'navbar.php';
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-brasil/js-brasil.js"></script>
+  <link rel="stylesheet" href="stylesheet.css">
+
   <style>
     .header {
       float: right;
@@ -37,6 +39,21 @@ include 'navbar.php';
       cursor: pointer;
       text-decoration: underline;
     }
+
+    .btn-custom {
+      background-color: #e78834 !important;
+      border-color: #e78834 !important;
+      color: black !important;
+      /* Cor do texto em branco */
+      font-weight: bold;
+      /* Texto em negrito */
+    }
+
+    .btn-custom:hover {
+      background-color: #d67528 !important;
+      /* Cor mais escura quando o mouse estiver em cima */
+      border-color: #d67528 !important;
+    }
   </style>
 </head>
 
@@ -45,14 +62,14 @@ include 'navbar.php';
     <br><br>
     <div class="row row-cols-2 row-cols-md-1 mb-3 text-center">
       <div class="col">
-        <div class="card mb-4 rounded-3 shadow-sm">
+        <div class="card mb-4 rounded-3 shadow-sm border-dark">
           <div class="card-header py-2">
             <h4 class="my-0 fw-normal"><b><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-square" viewBox="0 0 16 16">
                   <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
                   <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z" />
                 </svg>&nbsp;&nbsp;Treinadores</b></h4><br />
             <div class="d-grid gap-2 col-2 mx-auto">
-              <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">Novo Treinador</button>
+              <button type="button" class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#exampleModal">Novo Treinador</button>
             </div>
             <form class="d-flex justify-content-start align-items-center" role="search">
               <img src="css/lupa.png" alt="Ícone de Pesquisa" style="width: 20px; height: 20px; margin-right: 10px; " />
